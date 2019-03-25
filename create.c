@@ -28,7 +28,5 @@ int main()
     //Drive straight until it senses the r
 
     create_disconnect();
-    
-    //function for people sweeping
     return 0;
 }

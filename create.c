@@ -13,19 +13,32 @@ int main()
     
     //startup prerun functions
     create_connect(); //connect wallaby to create
+    msleep(100);
+    printf("Create Batter Power Before: %d",get_create_battery_charge());
+    printf("/n");
+    msleep(3000);
     enable_servo(power);
-    set_servo_position(power,1550);
-    msleep(1000);
-    enable_servo(people);
-    set_servo_position(people,2040);
-    msleep(1000);
-        while (get_servo_position(power) > 600) {
-        powerP = powerP-25;
-        msleep(15);
+        while (get_servo_position(power) < 1400) {
+        powerP = powerP+25;
+        msleep(100);
         set_servo_position(power,powerP);
     } 
+    enable_servo(people);
+    msleep(1000);
+        while (get_servo_position(people) < 2020) {
+        peopleP = peopleP+25;
+        msleep(100);
+        set_servo_position(people,peopleP);    
+    }
+    set_servo_position(people,2040);    
+        while (get_servo_position(power) > 600) {
+        powerP = powerP-25;
+        msleep(100);
+        set_servo_position(power,powerP);
+    } 
+    set_servo_position(power,600);
      
-    msleep(1000);//wait for light
+    msleep(500);//wait for light
     shut_down_in(119); //stop all code in 120 seconds
     
     //Official start of code:
@@ -97,7 +110,7 @@ int main()
     create_stop();*/
     //slowly approach the power lines
     while (get_create_rbump() == 0 || get_create_lbump() == 0) {
-        create_drive_direct(100,100);
+        create_drive_direct(200,200); //100
     }
     create_stop();
     
@@ -148,14 +161,19 @@ int main()
     
     //position for right washer
     create_spin_CCW(200);
-    msleep(960);
+    msleep(1000);//960
     create_drive_direct(-100,-100);
     msleep(750);
     set_servo_position(power, 1520);
+    msleep(1000); //added
     
     //connect washer and push container
-    create_drive_direct(-200,-200);
+    create_drive_direct(-150,-150);
     msleep(1200);
+    while (get_digital_value(8) == 0 && get_digital_value(9) == 0) {
+    create_drive_direct(-35,-35); //200
+    //msleep(1200);
+    }
     create_stop();
     
     //unhook and turn for next washer
@@ -175,8 +193,13 @@ int main()
     
     //connect next washer
     set_servo_position(power, 1575);
-    create_drive_direct(200,200);
-    msleep(1350);
+    msleep(1000); //added
+    create_drive_direct(150,150);
+    msleep(1350); //1350
+    while (get_digital_value(8) == 0 && get_digital_value(9) == 0) {  
+    create_drive_direct(35,35); //200 //75
+    }
+    create_stop(); //added
     
     //disconnect from washer
     set_servo_position(power, 1800);
@@ -197,6 +220,7 @@ int main()
     msleep(4000);
     create_stop();
     msleep(1000);
+        printf("Create Batter Power after: %d",get_create_battery_charge());
     
     return 0;
 }

@@ -9,7 +9,8 @@ int main()
     int people = 0;
     int powerP = get_servo_position(power);
     int peopleP = get_servo_position(people);
-    int quarter = 950;    
+    int quarter = 950;
+    int timer = 0;
     
     //startup prerun functions
     create_connect(); //connect wallaby to create
@@ -73,7 +74,7 @@ int main()
     create_spin_CCW(200);
     msleep(960);
     create_drive_direct(200,200);
-    msleep(1250); //1250 1500
+    msleep(1500); //1250 1500 ///watch this number
     create_spin_CW(200);
     msleep(930);
     
@@ -85,15 +86,15 @@ int main()
     
     //position for right washer
     create_spin_CCW(200);
-    msleep(940);//960 1000 960
+    msleep(950);//960 1000 960 920
     create_drive_direct(-100,-100);
-    msleep(1150); //750 1000 //1250 1150
+    msleep(1000); //750 1000 //1250 1150 //1075
     set_servo_position(power, 1620); //1520
     //msleep(1000); //added
     
     //connect washer and push container
     create_drive_direct(-150,-150);
-    msleep(1500); //1200 1500 1675
+    msleep(1725); //1200 1500 1675
     /*while (get_digital_value(8) == 0 && get_digital_value(9) == 0) {
     create_drive_direct(-100,-100); //200
     //msleep(1200);
@@ -112,7 +113,7 @@ int main()
     create_spin_CW(200);
     msleep(480);
     create_drive_direct(200,200);
-    msleep(1750);
+    msleep(1850); //1750
     create_stop();
     msleep(500);
     
@@ -120,7 +121,7 @@ int main()
     set_servo_position(power, 1625); //1575
     msleep(1000); //added
     create_drive_direct(150,150);
-    msleep(1600); //1350
+    msleep(1600); //1350 1600
     /*while (get_digital_value(8) == 0 && get_digital_value(9) == 0) {  
     create_drive_direct(35,35); //200 //75
     }
@@ -138,10 +139,45 @@ int main()
     create_spin_CCW(200);
     msleep(480);
     
-    while (analog(0) < 3000){
+    //check the gray and black line is passed before turning
+    while (analog(0) < 2500){
         create_drive_direct(-200,-200);
     }
     create_stop();
+    
+    while (analog(1) > 2500){
+        create_drive_direct(-200,-200);
+    }
+    create_stop();
+    
+    //turn to align with the gray and black line
+    create_spin_CW(200);
+    msleep(800);
+    
+    while (timer < 80){ //to change time, add a zero to however many seconds you want it to double line follow
+        if (analog(0) > 2500 && analog(1) > 2500){
+            create_drive_direct(-200,-200);
+            msleep(100);
+            timer = timer + 1;
+        }
+        else if (analog(0) > 2500 && analog(1) < 2500){
+            create_drive_direct(0,-200);
+            msleep(100);
+            timer = timer + 1;
+    	}
+    	else if (analog(0) < 2500 && analog(1) > 2500) {
+            create_drive_direct(-200,0);
+            msleep(100);
+            timer = timer + 1;
+        }
+        else{
+            printf("where am I?");
+            msleep(1000);
+        }
+    }
+          create_stop();
+    
+    
     /*create_drive_direct(-400,-400);
     msleep(1000);
     create_spin_CW(200);

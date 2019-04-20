@@ -19,24 +19,9 @@ int main()
     printf("/n");
     msleep(1000);
     enable_servo(power);
-        /*while (get_servo_position(power) < 1400) {
-        powerP = powerP+75;
-        msleep(100);
-        set_servo_position(power,powerP);
-    } */
     msleep(1000);
     enable_servo(people);
-        /*while (get_servo_position(people) < 2020) {
-        peopleP = peopleP+75;
-        msleep(100);
-        set_servo_position(people,peopleP);    
-    }*/
-    set_servo_position(people,2040);    
-        /*while (get_servo_position(power) > 600) {
-        powerP = powerP-25;
-        msleep(100);
-        set_servo_position(power,powerP);
-    } */
+    set_servo_position(people,2040);
     set_servo_position(power,600);
      
     msleep(500);//wait for light
@@ -88,19 +73,17 @@ int main()
     create_spin_CCW(200);
     msleep(950);//960 1000 960 920
     create_drive_direct(-100,-100);
-    msleep(1000); //750 1000 //1250 1150 //1075
-    set_servo_position(power, 1620); //1520
+    msleep(800); //750 1000 //1250 1150 //1075 1000
+    create_stop();
+    msleep(1000);
+    set_servo_position(power, 1670); //1520 1620
     //msleep(1000); //added
     
     //connect washer and push container
     create_drive_direct(-150,-150);
-    msleep(1725); //1200 1500 1675
-    /*while (get_digital_value(8) == 0 && get_digital_value(9) == 0) {
-    create_drive_direct(-100,-100); //200
-    //msleep(1200);
-    }*/
+    msleep(1825); //1200 1500 1675 1725
     create_stop();
-    msleep(1000);
+    msleep(250);
     
     //unhook and turn for next washer
     set_servo_position(power, 1800); //1700
@@ -122,10 +105,6 @@ int main()
     msleep(1000); //added
     create_drive_direct(150,150);
     msleep(1600); //1350 1600
-    /*while (get_digital_value(8) == 0 && get_digital_value(9) == 0) {  
-    create_drive_direct(35,35); //200 //75
-    }
-    create_stop(); //added */
     
     //disconnect from washer
     set_servo_position(power, 1800);
@@ -152,9 +131,9 @@ int main()
     
     //turn to align with the gray and black line
     create_spin_CW(200);
-    msleep(800);
+    msleep(700);
     
-    while (timer < 80){ //to change time, add a zero to however many seconds you want it to double line follow
+    while (timer < 70){ //to change time, add a zero to however many seconds you want it to double line follow
         if (analog(0) > 2500 && analog(1) > 2500){
             create_drive_direct(-200,-200);
             msleep(100);
@@ -176,6 +155,7 @@ int main()
         }
     }
           create_stop();
+    	  timer = 0;
     
     
     /*create_drive_direct(-400,-400);
@@ -186,8 +166,10 @@ int main()
     msleep(4000);
     create_stop();
     msleep(1000);
-        printf("Create Batter Power after: %d",get_create_battery_charge());
-        */
+        */printf("Create Batter Power after: %d",get_create_battery_charge());
+        
+    
+      
     
     return 0;
 }

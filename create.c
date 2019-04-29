@@ -2,6 +2,7 @@
 
 int main()
 {
+
     printf("This is the create's code\n");
 
     //List integers:
@@ -122,7 +123,7 @@ int main()
     while (analog(0) < 2500){
         create_drive_direct(-200,-200);
     }
-    create_stop();
+    msleep(333);
     
     while (analog(1) > 2500){
         create_drive_direct(-200,-200);
@@ -133,7 +134,7 @@ int main()
     create_spin_CW(200);
     msleep(700);
     
-    while (timer < 70){ //to change time, add a zero to however many seconds you want it to double line follow
+    while (timer < 80){ //to change time, add a zero to however many seconds you want it to double line follow
         if (analog(0) > 2500 && analog(1) > 2500){
             create_drive_direct(-200,-200);
             msleep(100);
@@ -150,13 +151,41 @@ int main()
             timer = timer + 1;
         }
         else{
-            printf("where am I?");
-            msleep(1000);
+			create_drive_direct(-100,-200);
+            msleep(100);
         }
     }
           create_stop();
     	  timer = 0;
-    
+   
+    	camera_open_black();
+    	msleep(1000);
+    	while (timer < 50){
+    		camera_update();
+            msleep(10);
+            timer = timer + 1;
+        }
+    	
+        if (get_object_area(0,0) >=100) //turn until it sees an object
+        {
+           create_spin_CW(200);
+           msleep(300);
+           create_drive_direct(-200,-200);
+           msleep(2000);
+           create_drive_direct(200,200);
+           msleep(2000);
+           create_spin_CCW(200);
+           msleep(300);
+        }
+    	else
+        {
+           create_drive_direct(-200,-200);
+           msleep(1200);
+           create_drive_direct(200,200);
+           msleep(1200);
+    	}
+    camera_close();
+    create_stop();
     
     /*create_drive_direct(-400,-400);
     msleep(1000);

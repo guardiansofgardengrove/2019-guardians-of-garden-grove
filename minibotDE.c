@@ -1,8 +1,8 @@
 #include <kipr/botball.h>
 
 //List of functions:
-void line_follow_until_front_sees_white();
-void line_follow_until_front_sees_black();
+void turn_slightly_before_line_following();
+void drive_straight_until_front_ref_sees_black();
 
 //List of integers:
     //Motors:
@@ -10,24 +10,21 @@ void line_follow_until_front_sees_black();
 		int rm = 3; //Right Motor = port 3
 		int bm = 0; //Bucket Motor = port 0
     //Servos:
-		int claw = 2; //CLAW servo = port 2
-    		/*/its positions:
-    			int open = _; //OPENing the claw = value of ____
-                int close = _; //CLOSing the claw = value of ___ /*/	
+		int claw = 2; //CLAW servo = port 2	
 		int arm = 3; //ARM servo = port 3
-    		/*/its positions:
-                int up_90 = __; //arm is UP at 90 degrees = value of ___
-                int down_90 = __; //arm is DOWN at 90 degrees = value of ___ /*/
     //Sensors:
     	//Analogs:
     		int light = 0; //LIGHT sensor (preliminary) = port 0
             int front_ref = 1; //FRONT REFlectance = port 1
     		int left_ref = 2; //LEFT REFlectance = port 2
-    	//Touch:
-    		int touch_red = 0; //TOUCH sensor (RED lever) = port 0
+
+//Notes:
+    //circumfrence of wheel = 216.7 mm and there are 1800 ticks per revolution
+    // = 1 tick = .12 mm
 
 int main()
 {
+    /*/
     printf("This is our double elimination code\n");
    
     //Preliminary code:
@@ -35,69 +32,101 @@ int main()
     //wait_for_light(light); //calibration code
     
     //Start of real code:
-    line_follow_until_front_sees_black();
-           
-    //testing msleep time
-    msleep(3000); //3 seconds time lapse
+    //move forward just enough to clear the black tape from front reflectance
+    cmpc(lm);
+    while (gmpc(lm) < 3800) //4000
+    {
+        motor(lm,70);
+        motor(rm,70);
+    }
+    ao();
     
-   line_follow_until_front_sees_white();
-               
-    //go straight (blindly) until front reflectance sees gray
+    msleep(500);
     
-    /*/ //testing line following code for blue tape values
-    double start_time=seconds();
-        while(seconds()<start_time+18) //testing for 18 seconds
+    //make the left motor move 20 mm just to straighten up a bit
+    cmpc(lm);
+    while (gmpc(lm) < 250)
+    {
+        motor(lm,30);
+    }
+    ao();
+    
+    msleep(500);
+    
+    //turn 90 degrees to back up on the pipe
+    motor(rm,-70);
+    motor(lm,70);
+    msleep(540);
+    ao();
+    
+    msleep(500);
+    
+    //drive backwards into the pipe to straighten up the robot
+    motor(rm,-70);
+    motor(lm,-70);
+    msleep(2000);
+    ao();
+    
+    msleep(500);
+    
+    /*/
+    //line follow along the first black portion
+    double first_line=seconds();
+        while(seconds()<first_line+30) //for 3.5 seconds approximately
         {
-        	if (analog(front_ref)>1150)
+        	if (analog(left_ref)<1150) //if it sees white, turn more left
             {
-            motor(rm,20); //20
-            motor(lm,70); //70
+            	motor(rm,70);
+            	motor(lm,40);
             }
-        	else
+            if (analog(left_ref)<2200) //if it sees between white and black, go straight
             {
-            motor(rm,70); //70
-            motor(lm,20); //20
+                motor(rm,50);
+                motor(lm,50);
+            }
+        	else //if it sees black, turn more right
+            {
+            	motor(rm,40);
+            	motor(lm,70);
             }
         }
     ao();
-    /*/
     
+    /*/
+    //turn slightly to the right to make up for possible turning
+    turn_slightly_before_line_following();
+    
+    //drive forward until sees the grey line
+    while (analog(front_ref)>1500)
+    {
+        motor(rm,70);
+    	motor(lm,70);
+    }
+    msleep(500);
+    ao();
+    
+    //turn slightly to the right to make up for possible turning
+    turn_slightly_before_line_following();
+    
+    //drive forward 
+    
+    /*/
     return 0;
 }
 
 //Definitions of functions:
-void line_follow_until_front_sees_white()
+void turn_slightly_before_line_following()
 {
-	//line follow with left relectance until front reflectance sees white
-    while (analog(front_ref)>2000) //while the front reflectance sees black
-    {
-    	if (analog(left_ref)<1000) //if the left reflectance sees white
-        {
-            motor(rm,20); //turn more right
-            motor(lm,70);
-        }
-        else //if the left relectance sees black
-        {
-            motor(rm,70);
-            motor(lm,20); //turn more left
-        }
-    }
+	motor(rm,-30);
+    msleep(250);
+    ao();
 }
 
-void line_follow_until_front_sees_black()
+void drive_straight_until_front_ref_sees_black()
 {
-    //line follow with left relectance until front reflectance sees black
-    while (analog(front_ref)<3000) //while the front reflectance sees white
+    while (analog(front_ref)<2500) //while the front reflectance doesn't see black yet...
     {
-        if (analog(left_ref)<1000) //if the left reflectance sees white
-        {
-            motor(rm,20); //turn more right
-            motor(lm,70);
-        }
-        else //if the left relectance sees black
-        {
-            motor(rm,70);
-            motor(lm,20); //turn more left
-        }
+        motor(lm,75); //drive forward as fast as possible
+        motor(rm,75);
     }
 }

@@ -1,8 +1,7 @@
 #include <kipr/botball.h>
 
 //List of functions:
-void turn_slightly_before_line_following();
-void drive_straight_until_front_ref_sees_black();
+void grab_blue_poms_and_move();
 
 //List of integers:
     //Motors:
@@ -10,8 +9,8 @@ void drive_straight_until_front_ref_sees_black();
 		int rm = 3; //Right Motor = port 3
 		int bm = 0; //Bucket Motor = port 0
     //Servos:
-		int claw = 2; //CLAW servo = port 2	
-		int arm = 3; //ARM servo = port 3
+		int claw = 3; //CLAW servo = port 3	
+		int arm = 2; //ARM servo = port 2
     //Sensors:
     	//Analogs:
     		int light = 0; //LIGHT sensor (preliminary) = port 0
@@ -24,7 +23,7 @@ void drive_straight_until_front_ref_sees_black();
 
 int main()
 {
-    /*/
+    
     printf("This is our double elimination code\n");
    
     //Preliminary code:
@@ -33,21 +32,11 @@ int main()
     
     //Start of real code:
     //move forward just enough to clear the black tape from front reflectance
-    cmpc(lm);
-    while (gmpc(lm) < 3800) //4000
+    cmpc(rm);
+    while (gmpc(rm) < 3900)
     {
-        motor(lm,70);
+        motor(lm,78);
         motor(rm,70);
-    }
-    ao();
-    
-    msleep(500);
-    
-    //make the left motor move 20 mm just to straighten up a bit
-    cmpc(lm);
-    while (gmpc(lm) < 250)
-    {
-        motor(lm,30);
     }
     ao();
     
@@ -69,64 +58,66 @@ int main()
     
     msleep(500);
     
-    /*/
-    //line follow along the first black portion
-    double first_line=seconds();
-        while(seconds()<first_line+30) //for 3.5 seconds approximately
-        {
-        	if (analog(left_ref)<1150) //if it sees white, turn more left
-            {
-            	motor(rm,70);
-            	motor(lm,40);
-            }
-            if (analog(left_ref)<2200) //if it sees between white and black, go straight
-            {
-                motor(rm,50);
-                motor(lm,50);
-            }
-        	else //if it sees black, turn more right
-            {
-            	motor(rm,40);
-            	motor(lm,70);
-            }
-        }
-    ao();
-    
-    /*/
-    //turn slightly to the right to make up for possible turning
-    turn_slightly_before_line_following();
-    
-    //drive forward until sees the grey line
-    while (analog(front_ref)>1500)
+    //go straight to the blue line
+    cmpc(rm);
+    while (gmpc(rm) < 5833)
     {
+        motor(lm,78);
         motor(rm,70);
-    	motor(lm,70);
+        
     }
-    msleep(500);
     ao();
     
-    //turn slightly to the right to make up for possible turning
-    turn_slightly_before_line_following();
+    msleep(500);
     
-    //drive forward 
+    //turn 90 degrees to face the long blue tape
+    motor(rm,-70);
+    motor(lm,70);
+    msleep(550);
+    ao();
     
-    /*/
+    msleep(500);
+    
+    //go back a little to get into position to grab the first category of blue poms
+    cmpc(rm);
+    while (gmpc(rm) > -583)
+    {
+        motor(lm,-78);
+        motor(rm,-70);
+        
+    }
+    ao();
+    
+    //first blue pom collection and move
+    grab_blue_poms_and_move();
+        
     return 0;
 }
 
 //Definitions of functions:
-void turn_slightly_before_line_following()
+void grab_blue_poms_and_move()
 {
-	motor(rm,-30);
-    msleep(250);
-    ao();
-}
-
-void drive_straight_until_front_ref_sees_black()
-{
-    while (analog(front_ref)<2500) //while the front reflectance doesn't see black yet...
-    {
-        motor(lm,75); //drive forward as fast as possible
-        motor(rm,75);
-    }
+    //Pick up the poms and place them in the basket:
+    //put claw down 45 degrees
+    
+    set_servo_position(arm,1024);
+    enable_servo(arm);
+    msleep(500);
+    //open claw completely
+    set_servo_position(claw,533);
+    enable_servo(claw);
+    msleep(500);
+    //lower claw completely
+    set_servo_position(arm,359);
+    msleep(500);
+    //close claw
+    set_servo_position(claw,1218);
+    msleep(500);
+    //lift all the way back
+    set_servo_position(arm,1775);
+    msleep(500);
+    //open claw as far as possible;ie 15 Degree
+    set_servo_position(claw,818);
+    msleep(500);
+    
 }

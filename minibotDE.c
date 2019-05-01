@@ -1,6 +1,8 @@
 #include <kipr/botball.h>
 
 //List of functions:
+void grab_blue_poms();
+void and_move();
 void grab_blue_poms_and_move();
 
 //List of integers:
@@ -9,10 +11,16 @@ void grab_blue_poms_and_move();
 		int rm = 3; //Right Motor = port 3
 		int bm = 0; //Bucket Motor = port 0
     //Servos:
-		int claw = 3; //CLAW servo = port 3	
 		int arm = 2; //ARM servo = port 2
+			int up_to_drop = 1775; //the arm is up and behind to drop the poms into the holder
+			int halfway = 1024; //the arm is halfway down (45 degrees) at 1024
+			int down = 359; //the arm is all the way down on the ground (0 degrees) at 359
+		int claw = 3; //CLAW servo = port 3	
+			int open_all = 533; //the claw is open all the way at 533
+			int open_to_drop = 818; //the claw is open enough to drop the poms into their container at 818
+			int close_enough_to_pass_return = 1000; //the claw is closed enough to be brough back to the gound at 1000
+			int close_all = 1218; //the claw is closed all the way at 1218
     //Sensors:
-    	//Analogs:
     		int light = 0; //LIGHT sensor (preliminary) = port 0
             int front_ref = 1; //FRONT REFlectance = port 1
     		int left_ref = 2; //LEFT REFlectance = port 2
@@ -23,7 +31,6 @@ void grab_blue_poms_and_move();
 
 int main()
 {
-    
     printf("This is our double elimination code\n");
    
     //Preliminary code:
@@ -88,36 +95,64 @@ int main()
     }
     ao();
     
+    msleep(1000);
+    
+    //Go along the whole blue line and collect the poms:
     //first blue pom collection and move
     grab_blue_poms_and_move();
-        
+    
+    //straighten out right motor briefly
+    cmpc(rm);
+    while (gmpc(rm) < 25)
+    {
+        motor(rm,50);
+    }
+    ao();
+    
     return 0;
 }
 
 //Definitions of functions:
-void grab_blue_poms_and_move()
+void grab_blue_poms()
 {
     //Pick up the poms and place them in the basket:
     //put claw down 45 degrees
-    
-    set_servo_position(arm,1024);
+    set_servo_position(arm,halfway);
     enable_servo(arm);
     msleep(500);
     //open claw completely
-    set_servo_position(claw,533);
+    set_servo_position(claw,open_all);
     enable_servo(claw);
     msleep(500);
     //lower claw completely
-    set_servo_position(arm,359);
+    set_servo_position(arm,down);
     msleep(500);
     //close claw
-    set_servo_position(claw,1218);
+    set_servo_position(claw,close_all);
     msleep(500);
     //lift all the way back
-    set_servo_position(arm,1775);
+    set_servo_position(arm,up_to_drop);
+    msleep(1000);
+    //open claw as far as possible to drop them into the bucket
+    set_servo_position(claw,open_to_drop);
     msleep(500);
-    //open claw as far as possible;ie 15 Degree
-    set_servo_position(claw,818);
+    //close claw to dislodge
+    set_servo_position(claw,close_all);
     msleep(500);
-    
+    //open claw again, but not as much, to ensure clearance
+    set_servo_position(claw,close_enough_to_pass_return);
+    msleep(500);  
+}
+
+void and_move()
+{
+
+}
+
+void grab_blue_poms_and_move()
+{
+    grab_blue_poms();
+    msleep(1000);
+    and_move();
+    msleep(1000);
 }

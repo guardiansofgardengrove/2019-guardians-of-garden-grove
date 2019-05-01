@@ -58,31 +58,38 @@ int main()
     
     //adjust to push container
     create_spin_CCW(200);
-    msleep(960);
+    msleep(950); //960
     create_drive_direct(200,200);
     msleep(1500); //1250 1500 ///watch this number
     create_spin_CW(200);
-    msleep(930);
+    msleep(870); //930 900
     
     //slowly approach the power lines
     while (get_create_rbump() == 0 || get_create_lbump() == 0) {
         create_drive_direct(200,200); //100
+        timer = timer + 1;
+        msleep(100);
+        if (timer > 30) {
+            break;
+        }
     }
     create_stop();
+    timer = 0;
     
     //position for right washer
     create_spin_CCW(200);
-    msleep(950);//960 1000 960 920
+    msleep(980);//960 1000 960 920 950
     create_drive_direct(-100,-100);
     msleep(800); //750 1000 //1250 1150 //1075 1000
+    //create_stop();
+    //msleep(1000);
+    set_servo_position(power, 1570); //1520 1620 1670
     create_stop();
     msleep(1000);
-    set_servo_position(power, 1670); //1520 1620
-    //msleep(1000); //added
     
     //connect washer and push container
     create_drive_direct(-150,-150);
-    msleep(1825); //1200 1500 1675 1725
+    msleep(1725); //1200 1500 1675 1725 1825
     create_stop();
     msleep(250);
     
@@ -91,21 +98,24 @@ int main()
     create_spin_CCW(200);
     msleep(480);
     
-    create_drive_direct(50,50);
+    create_drive_direct(25,25); //50
     msleep(250);
     set_servo_position(power, 800);
     create_spin_CW(200);
-    msleep(480);
+    msleep(465); //480
     create_drive_direct(200,200);
-    msleep(1850); //1750
-    create_stop();
-    msleep(500);
+    msleep(1950); //1750 1850
+    //create_stop();
+    //msleep(500);
     
     //connect next washer
     set_servo_position(power, 1625); //1575
+    create_stop();
     msleep(1000); //added
     create_drive_direct(150,150);
-    msleep(1600); //1350 1600
+    msleep(1800); //1350 1600 1700
+    create_stop();
+    msleep(250);
     
     //disconnect from washer
     set_servo_position(power, 1800);
@@ -132,27 +142,28 @@ int main()
     
     //turn to align with the gray and black line
     create_spin_CW(200);
-    msleep(700);
+    msleep(500);
     
-    while (timer < 80){ //to change time, add a zero to however many seconds you want it to double line follow
+    while (timer < 55){ //to change time, add a zero to however many seconds you want it to double line follow //80
         if (analog(0) > 2500 && analog(1) > 2500){
-            create_drive_direct(-200,-200);
+            create_drive_direct(-250,-250);
             msleep(100);
             timer = timer + 1;
         }
         else if (analog(0) > 2500 && analog(1) < 2500){
-            create_drive_direct(0,-200);
+            create_drive_direct(0,-250);
             msleep(100);
             timer = timer + 1;
     	}
     	else if (analog(0) < 2500 && analog(1) > 2500) {
-            create_drive_direct(-200,0);
+            create_drive_direct(-250,0);
             msleep(100);
             timer = timer + 1;
         }
         else{
-			create_drive_direct(-100,-200);
+			create_drive_direct(-250,-125);
             msleep(100);
+            timer = timer + .5;
         }
     }
           create_stop();
@@ -160,22 +171,22 @@ int main()
    
     	camera_open_black();
     	msleep(1000);
-    	while (timer < 50){
+    	while (timer < 100){
     		camera_update();
-            msleep(10);
+            msleep(5);
             timer = timer + 1;
         }
     	
-        if (get_object_area(0,0) >=100) //turn until it sees an object
+        if (get_object_area(0,0) >=100) //turn if it sees an object
         {
            create_spin_CW(200);
-           msleep(300);
+           msleep(500);
            create_drive_direct(-200,-200);
            msleep(2000);
            create_drive_direct(200,200);
            msleep(2000);
            create_spin_CCW(200);
-           msleep(300);
+           msleep(500);
         }
     	else
         {
@@ -185,6 +196,7 @@ int main()
            msleep(1200);
     	}
     camera_close();
+    timer = 0;
     create_stop();
     
     /*create_drive_direct(-400,-400);

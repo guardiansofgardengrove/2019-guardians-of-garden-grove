@@ -62,7 +62,7 @@ int main()
     create_drive_direct(200,200);
     msleep(1500); //1250 1500 ///watch this number
     create_spin_CW(200);
-    msleep(870); //930 900
+    msleep(870); //930 900 870(before mess up) 915
     
     //slowly approach the power lines
     while (get_create_rbump() == 0 || get_create_lbump() == 0) {
@@ -153,12 +153,12 @@ int main()
         else if (analog(0) > 2500 && analog(1) < 2500){
             create_drive_direct(0,-250);
             msleep(100);
-            timer = timer + 1;
+            timer = timer + .5;
     	}
     	else if (analog(0) < 2500 && analog(1) > 2500) {
             create_drive_direct(-250,0);
             msleep(100);
-            timer = timer + 1;
+            timer = timer + .5;
         }
         else{
 			create_drive_direct(-250,-125);
@@ -182,32 +182,51 @@ int main()
            create_spin_CW(200);
            msleep(500);
            create_drive_direct(-200,-200);
-           msleep(2000);
+           msleep(2500);
            create_drive_direct(200,200);
-           msleep(2000);
+           msleep(2500);
            create_spin_CCW(200);
            msleep(500);
         }
     	else
         {
            create_drive_direct(-200,-200);
-           msleep(1200);
+           msleep(1700);
            create_drive_direct(200,200);
-           msleep(1200);
+           msleep(1700);
     	}
     camera_close();
     timer = 0;
     create_stop();
     
-    /*create_drive_direct(-400,-400);
-    msleep(1000);
-    create_spin_CW(200);
-    msleep(950);
-    create_drive_direct(-400,-400);
+    
+    //give minibot some time
+    create_drive_direct(400,400);
+    msleep(2500);
+    create_spin_CCW(200);
+    msleep(960);
+    create_drive_direct(-200,-200);
     msleep(4000);
     create_stop();
+    msleep(20000);
+    
+    //drive to people 1
+    create_drive_direct(200,200);
     msleep(1000);
-        */printf("Create Batter Power after: %d",get_create_battery_charge());
+    create_spin_CCW(200);
+    msleep(960);
+    create_drive_direct(400,400);
+    msleep(2500);
+    create_spin_CW(200);
+    msleep(960);
+    create_drive_direct(-200,-200);
+    msleep(1000);
+    create_drive_direct(400,400);
+    msleep(1750);
+    
+    
+    
+    printf("Create Batter Power after: %d",get_create_battery_charge());
         
     
       

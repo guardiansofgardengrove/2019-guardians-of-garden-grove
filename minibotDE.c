@@ -67,6 +67,7 @@ int main()
     ao();
     
     msleep(500);
+    //forever msleep(300000000);
     
     //go straight to the blue line
     cmpc(rm);
@@ -93,12 +94,11 @@ int main()
     while (gmpc(rm) > -583)
     {
         motor(lm,-78);
-        motor(rm,-70);
-        
+        motor(rm,-70);  
     }
     ao();
     
-    msleep(1000);
+    msleep(500);
     
     //Go along the whole blue line and collect the poms:
     //first blue pom collection
@@ -113,7 +113,7 @@ int main()
     
     //move lm back to make it parallel to wall to back up
     cmpc(lm);
-    while (gmpc(lm) > -125)
+    while (gmpc(lm) > -170) 
     {
         motor(lm,-60);
     }
@@ -125,24 +125,32 @@ int main()
     cmpc(rm);
     while (gmpc(rm) > -2078)
     {
-        motor(rm,-50);
-        motor(lm,-50);
+        motor(rm,-70);
+        motor(lm,-78);
     }
     ao();
     
     msleep(1000);
     
-    /*/
-    
     //go forward to the second pom gathering
     cmpc(rm);
-    while (gmpc(rm) < ######)
+    while (gmpc(rm) < 4200)
     {
-        motor(rm,60);
-        motor(lm,60);
+        motor(rm,70);
+        motor(lm,78);
     }
     ao();
-    /*/
+    
+    msleep(500);
+
+    //2nd pom yeeeeet
+    grab_blue_poms();
+    
+    msleep(500);
+    
+    //move to third pom
+    //and_move();
+    
     return 0;
 }
 
@@ -180,7 +188,13 @@ void grab_blue_poms()
 
 void and_move()
 {
-
+ cmpc(rm);
+    while (gmpc(rm) < 4200)
+    {
+        motor(rm,70);
+        motor(lm,78);
+    }
+    ao();
 }
 
 void grab_blue_poms_and_move()

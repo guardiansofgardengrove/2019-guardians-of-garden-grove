@@ -6,11 +6,14 @@ void and_move();
 void grab_blue_poms_and_move();
 
 //List of integers:
-    //Motors:
+    //Motors: 
 		int lm = 2; //Left Motor = port 2
 		int rm = 3; //Right Motor = port 3
 		int bm = 0; //Bucket Motor = port 0
     //Servos:
+		int bumper = 1; //BUMPER servo = port 1
+			int bumper_up = 124; //the bumper is up and out of the way for clearance at 124
+            int bumper_down = 1024; //the bumper is parallel to the ground for backing up at 1024
 		int arm = 2; //ARM servo = port 2
 			int up_to_drop = 1775; //the arm is up and behind to drop the poms into the holder
 			int halfway = 1024; //the arm is halfway down (45 degrees) at 1024
@@ -98,17 +101,48 @@ int main()
     msleep(1000);
     
     //Go along the whole blue line and collect the poms:
-    //first blue pom collection and move
-    grab_blue_poms_and_move();
+    //first blue pom collection
+    grab_blue_poms();
     
-    //straighten out right motor briefly
-    cmpc(rm);
-    while (gmpc(rm) < 25)
+    msleep(500);
+    
+    //put bumper down
+    set_servo_position(bumper,bumper_down);
+    enable_servo(bumper);
+    msleep(1000);
+    
+    //move lm back to make it parallel to wall to back up
+    cmpc(lm);
+    while (gmpc(lm) > -125)
     {
-        motor(rm,50);
+        motor(lm,-60);
     }
     ao();
     
+    msleep(1000);
+    
+    //back up to run back into the two buildings
+    cmpc(rm);
+    while (gmpc(rm) > -2078)
+    {
+        motor(rm,-50);
+        motor(lm,-50);
+    }
+    ao();
+    
+    msleep(1000);
+    
+    /*/
+    
+    //go forward to the second pom gathering
+    cmpc(rm);
+    while (gmpc(rm) < ######)
+    {
+        motor(rm,60);
+        motor(lm,60);
+    }
+    ao();
+    /*/
     return 0;
 }
 
@@ -141,7 +175,7 @@ void grab_blue_poms()
     msleep(500);
     //open claw again, but not as much, to ensure clearance
     set_servo_position(claw,close_enough_to_pass_return);
-    msleep(500);  
+    msleep(1000);  
 }
 
 void and_move()

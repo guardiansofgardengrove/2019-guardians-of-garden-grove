@@ -158,7 +158,7 @@ int main()
     
     //correction
     cmpc(rm);
-    while (gmpc(rm) < 35) 
+    while (gmpc(rm) < 50) 
     {
         motor(rm,60);
     }
@@ -176,6 +176,14 @@ int main()
     
     //3rd blue pom collection
     grab_blue_poms();
+    
+    //correction
+    cmpc(rm);
+    while (gmpc(rm) < 50) 
+    {
+        motor(rm,60);
+    }
+    ao();
     
     //move to fourth pom gathering
     cmpc(rm);
@@ -206,10 +214,18 @@ int main()
         motor(lm,78);
     }
     ao();
-    msleep(500);
+    msleep(250);
     
     //5th blue pom collection
     grab_blue_poms();
+    
+    //correction
+    cmpc(rm);
+    while (gmpc(rm) < 50) 
+    {
+        motor(rm,60);
+    }
+    ao();
     
     //drive forward 
     cmpc(lm);
@@ -220,6 +236,10 @@ int main()
     }
     ao();
     
+    msleep(250);
+    
+    //lift up the bumper to clear
+    set_servo_position(bumper,bumper_up);
     msleep(500);
     
     //turn 90 degrees to face the long blue tape
@@ -228,75 +248,48 @@ int main()
     msleep(550);
     ao();
     
-    msleep(500);
+    msleep(250);
     
     //drive backwards into the pipe to straighten up the robot
     motor(rm,-70);
     motor(lm,-78);
-    msleep(2000);
+    msleep(2500);
     ao();
     
-    msleep(500);
+    msleep(250);
     
     //go forward into the zone
     cmpc(lm);
-    while (gmpc(lm) < 5833)
+    while (gmpc(lm) < 5500)
     {
-        motor(rm,70);
-        motor(lm,78);
+        motor(rm,88);
+        motor(lm,98);
     }
     ao();
     
-    msleep(500);
+    msleep(250);
     
-    /*/
-    //turn rm forward a bit
-    cmpc(rm);
-    while (gmpc(rm) > -???) 
-    {
-        motor(rm,-60);
-    }
+    //turn rm 45 degrees
+    motor(rm,70);
+    motor(lm,-70);
+    msleep(230);
     ao();
     
-    msleep(1000);
-    
-    //turn lm forward a bit
-    //move lm back to make it parallel to wall to back up
+    //drive forward a bit more
     cmpc(lm);
-    while (gmpc(lm) > -???) 
+    while (gmpc(lm) < 1300)
     {
-        motor(lm,-60);
+        motor(rm,88);
+        motor(lm,98);
     }
     ao();
     
-    msleep(1000);
-    
-    //push blue in farther
-    cmpc(lm);
-    while (gmpc(lm) < ????)
-    {
-        motor(rm,70);
-        motor(lm,78);
-    }
-    ao();
-    
-    msleep(500);
+    msleep(250);
     
     //release motor
-    motor(bucket,?????);
-    msleep(??????);
+    motor(bm,-100);
+    msleep(1000);
     ao();
-    
-    msleep(500);
-    
-    //put down arm
-    set_servo_position(arm,down);
-    
-    msleep(500);
-    
-    //open claw
-    set_servo_position(claw, open all);
-    /*/
     
     return 0;
 }

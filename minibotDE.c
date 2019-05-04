@@ -3,7 +3,6 @@
 //List of functions:
 void grab_blue_poms();
 void and_move();
-void grab_blue_poms_and_move();
 
 //List of integers:
     //Motors: 
@@ -19,10 +18,10 @@ void grab_blue_poms_and_move();
 			int halfway = 1024; //the arm is halfway down (45 degrees) at 1024
 			int down = 359; //the arm is all the way down on the ground (0 degrees) at 359
 		int claw = 3; //CLAW servo = port 3	
-			int open_all = 533; //the claw is open all the way at 533
-			int open_to_drop = 818; //the claw is open enough to drop the poms into their container at 818
+			int open_all = 694; //the claw is open all the way at 533
+			int open_to_drop = 836; //the claw is open enough to drop the poms into their container at 818
 			int close_enough_to_pass_return = 1000; //the claw is closed enough to be brough back to the gound at 1000
-			int close_all = 1218; //the claw is closed all the way at 1218
+			int close_all = 1212; //the claw is closed all the way at 1218
     //Sensors:
     		int light = 0; //LIGHT sensor (preliminary) = port 0
             int front_ref = 1; //FRONT REFlectance = port 1
@@ -62,7 +61,7 @@ int main()
     
     //drive backwards into the pipe to straighten up the robot
     motor(rm,-70);
-    motor(lm,-70);
+    motor(lm,-78);
     msleep(2000);
     ao();
     
@@ -113,7 +112,7 @@ int main()
     
     //move lm back to make it parallel to wall to back up
     cmpc(lm);
-    while (gmpc(lm) > -170) 
+    while (gmpc(lm) > -195)
     {
         motor(lm,-60);
     }
@@ -121,20 +120,31 @@ int main()
     
     msleep(1000);
     
+    //turn lm back
+    motor(lm,-78);
+    msleep(450);
+    ao();
+    //turn rm back
+    motor(rm,-70);
+    msleep(400);
+    ao();
+    
+    msleep(500);
+    
     //back up to run back into the two buildings
     cmpc(rm);
-    while (gmpc(rm) > -2078)
+    while (gmpc(rm) > -2000)
     {
         motor(rm,-70);
         motor(lm,-78);
     }
     ao();
     
-    msleep(1000);
+    msleep(500);
     
     //go forward to the second pom gathering
-    cmpc(rm);
-    while (gmpc(rm) < 4200)
+    cmpc(lm);
+    while (gmpc(lm) < 4450)
     {
         motor(rm,70);
         motor(lm,78);
@@ -143,13 +153,129 @@ int main()
     
     msleep(500);
 
-    //2nd pom yeeeeet
+    //2nd blue pom collection
     grab_blue_poms();
     
     msleep(500);
     
-    //move to third pom
-    //and_move();
+    
+    //move to third pom gathering
+    and_move();
+    msleep(500);
+    
+    //3rd blue pom collection
+    grab_blue_poms();
+    
+    //correction
+    cmpc(rm);
+    while (gmpc(rm) < -140) 
+    {
+        motor(rm,60);
+    }
+    ao();
+    
+    /*/
+    //move to fourth pom gathering
+    and_move();
+    msleep(500);
+    
+    //4th blue pom collection
+    grab_blue_poms();
+    
+    //move to fifth pom gathering
+    and_move();
+    msleep(500);
+    
+    //5th blue pom collection
+    grab_blue_poms();
+    
+    //drive forward 
+    cmpc(lm);
+    while (gmpc(lm) < ????)
+    {
+        motor(rm,70);
+        motor(lm,78);
+    }
+    ao();
+    
+    msleep(500);
+    
+    turn to face the scoring zone
+    //turn 90 degrees to face the long blue tape
+    motor(rm,-70);
+    motor(lm,70);
+    msleep(550);
+    ao();
+    
+    msleep(500);
+    
+    //back up into the pipe
+    //drive backwards into the pipe to straighten up the robot
+    motor(rm,-70);
+    motor(lm,-70);
+    msleep(2000);
+    ao();
+    
+    msleep(500);
+    
+    //go forward into the zone
+    cmpc(lm);
+    while (gmpc(lm) < ????)
+    {
+        motor(rm,70);
+        motor(lm,78);
+    }
+    ao();
+    
+    msleep(500);
+    
+    //turn rm forward a bit
+    cmpc(rm);
+    while (gmpc(rm) > -???) 
+    {
+        motor(rm,-60);
+    }
+    ao();
+    
+    msleep(1000);
+    
+    //turn lm forward a bit
+    //move lm back to make it parallel to wall to back up
+    cmpc(lm);
+    while (gmpc(lm) > -???) 
+    {
+        motor(lm,-60);
+    }
+    ao();
+    
+    msleep(1000);
+    
+    //push blue in farther
+    cmpc(lm);
+    while (gmpc(lm) < ????)
+    {
+        motor(rm,70);
+        motor(lm,78);
+    }
+    ao();
+    
+    msleep(500);
+    
+    //release motor
+    motor(bucket,?????);
+    msleep(??????);
+    ao();
+    
+    msleep(500);
+    
+    //put down arm
+    set_servo_position(arm,down);
+    
+    msleep(500);
+    
+    //open claw
+    set_servo_position(claw, open all);
+    /*/
     
     return 0;
 }
@@ -189,18 +315,10 @@ void grab_blue_poms()
 void and_move()
 {
  cmpc(rm);
-    while (gmpc(rm) < 4200)
+    while (gmpc(rm) < 3000)
     {
         motor(rm,70);
         motor(lm,78);
     }
     ao();
-}
-
-void grab_blue_poms_and_move()
-{
-    grab_blue_poms();
-    msleep(1000);
-    and_move();
-    msleep(1000);
 }

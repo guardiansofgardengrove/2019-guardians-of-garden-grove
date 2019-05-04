@@ -26,6 +26,7 @@ int main()
     set_servo_position(power,600);
      
     msleep(500);//wait for light
+    //wait_for_light(5);
     shut_down_in(119); //stop all code in 120 seconds
     printf("Create Batter Power at start: %d",get_create_battery_charge());
     printf("/n");
@@ -78,7 +79,7 @@ int main()
     
     //position for right washer
     create_spin_CCW(200);
-    msleep(980);//960 1000 960 920 950
+    msleep(980);//960 1000 960 920 950 (980 norma number)
     create_drive_direct(-100,-100);
     msleep(800); //750 1000 //1250 1150 //1075 1000
     //create_stop();
@@ -89,7 +90,7 @@ int main()
     
     //connect washer and push container
     create_drive_direct(-150,-150);
-    msleep(1725); //1200 1500 1675 1725 1825
+    msleep(1800); //1200 1500 1675 1725 1825 (1725 was the consistend number used)
     create_stop();
     msleep(250);
     
@@ -102,7 +103,7 @@ int main()
     msleep(250);
     set_servo_position(power, 800);
     create_spin_CW(200);
-    msleep(465); //480
+    msleep(456); //480 456 480
     create_drive_direct(200,200);
     msleep(1950); //1750 1850
     //create_stop();
@@ -171,22 +172,22 @@ int main()
    
     	camera_open_black();
     	msleep(1000);
-    	while (timer < 100){
+    	while (timer < 50){
     		camera_update();
-            msleep(5);
+            msleep(2);
             timer = timer + 1;
         }
     	
-        if (get_object_area(0,0) >=100) //turn if it sees an object
+        if (get_object_area(0,0) >=50) //turn if it sees an object 100
         {
-           create_spin_CW(200);
-           msleep(500);
+           create_drive_direct(0,-200);
+           msleep(800);
            create_drive_direct(-200,-200);
            msleep(2500);
            create_drive_direct(200,200);
            msleep(2500);
-           create_spin_CCW(200);
-           msleep(500);
+           create_drive_direct(0,200);
+           msleep(800);
         }
     	else
         {
@@ -202,7 +203,7 @@ int main()
     
     //give minibot some time
     create_drive_direct(400,400);
-    msleep(2500);
+    msleep(1500); //2500
     create_spin_CCW(200);
     msleep(960);
     create_drive_direct(-200,-200);
@@ -211,21 +212,31 @@ int main()
     msleep(20000);
     
     //drive to people 1
+    set_servo_position(power,1575);
     create_drive_direct(200,200);
     msleep(1000);
     create_spin_CCW(200);
     msleep(960);
     create_drive_direct(400,400);
-    msleep(2500);
+    msleep(1000);           //2500
     create_spin_CW(200);
     msleep(960);
     create_drive_direct(-200,-200);
     msleep(1000);
     create_drive_direct(400,400);
-    msleep(1750);
+    msleep(1000); //1700
     
+    //sweep the platforms
+    set_servo_position(people,400);
+    msleep(500);
+    create_drive_direct(200,200);
+    msleep(750);
+    set_servo_position(people,300);
+    msleep(500);
+    create_drive_direct(200,200);
+    msleep(1200);
     
-    
+    //set_servo_position(people,
     printf("Create Batter Power after: %d",get_create_battery_charge());
         
     

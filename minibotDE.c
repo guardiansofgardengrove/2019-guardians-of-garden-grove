@@ -2,7 +2,6 @@
 
 //List of functions:
 void grab_blue_poms();
-void and_move();
 
 //List of integers:
     //Motors: 
@@ -40,7 +39,7 @@ int main()
     //wait_for_light(light); //calibration code
     
     //Start of real code:
-    //move forward just enough to clear the black tape from front reflectance
+    //move forward
     cmpc(rm);
     while (gmpc(rm) < 3900)
     {
@@ -65,12 +64,11 @@ int main()
     msleep(2000);
     ao();
     
-    msleep(500);
-    //forever msleep(300000000);
+    msleep(30000);
     
     //go straight to the blue line
     cmpc(rm);
-    while (gmpc(rm) < 5833)
+    while (gmpc(rm) < 5800) //5833
     {
         motor(lm,78);
         motor(rm,70);
@@ -129,7 +127,7 @@ int main()
     msleep(400);
     ao();
     
-    msleep(500);
+    msleep(1000);
     
     //back up to run back into the two buildings
     cmpc(rm);
@@ -147,7 +145,7 @@ int main()
     while (gmpc(lm) < 4450)
     {
         motor(rm,70);
-        motor(lm,78);
+        motor(lm,80); //78
     }
     ao();
     
@@ -158,32 +156,56 @@ int main()
     
     msleep(500);
     
-    
-    //move to third pom gathering
-    and_move();
-    msleep(500);
-    
-    //3rd blue pom collection
-    grab_blue_poms();
-    
     //correction
     cmpc(rm);
-    while (gmpc(rm) < -140) 
+    while (gmpc(rm) < 35) 
     {
         motor(rm,60);
     }
     ao();
     
-    /*/
+    //move to third pom gathering
+    cmpc(rm);
+    while (gmpc(rm) < 2700)
+    {
+        motor(rm,70);
+        motor(lm,78);
+    }
+    ao();
+    msleep(500);
+    
+    //3rd blue pom collection
+    grab_blue_poms();
+    
     //move to fourth pom gathering
-    and_move();
+    cmpc(rm);
+    while (gmpc(rm) < 2550)
+    {
+        motor(rm,70);
+        motor(lm,78);
+    }
+    ao();
     msleep(500);
     
     //4th blue pom collection
     grab_blue_poms();
     
+    //correction
+    cmpc(rm);
+    while (gmpc(rm) < 50) 
+    {
+        motor(rm,60);
+    }
+    ao();
+    
     //move to fifth pom gathering
-    and_move();
+    cmpc(rm);
+    while (gmpc(rm) < 2300)
+    {
+        motor(rm,70);
+        motor(lm,78);
+    }
+    ao();
     msleep(500);
     
     //5th blue pom collection
@@ -191,7 +213,7 @@ int main()
     
     //drive forward 
     cmpc(lm);
-    while (gmpc(lm) < ????)
+    while (gmpc(lm) < 1667)
     {
         motor(rm,70);
         motor(lm,78);
@@ -200,7 +222,6 @@ int main()
     
     msleep(500);
     
-    turn to face the scoring zone
     //turn 90 degrees to face the long blue tape
     motor(rm,-70);
     motor(lm,70);
@@ -209,10 +230,9 @@ int main()
     
     msleep(500);
     
-    //back up into the pipe
     //drive backwards into the pipe to straighten up the robot
     motor(rm,-70);
-    motor(lm,-70);
+    motor(lm,-78);
     msleep(2000);
     ao();
     
@@ -220,7 +240,7 @@ int main()
     
     //go forward into the zone
     cmpc(lm);
-    while (gmpc(lm) < ????)
+    while (gmpc(lm) < 5833)
     {
         motor(rm,70);
         motor(lm,78);
@@ -229,6 +249,7 @@ int main()
     
     msleep(500);
     
+    /*/
     //turn rm forward a bit
     cmpc(rm);
     while (gmpc(rm) > -???) 
@@ -310,15 +331,4 @@ void grab_blue_poms()
     //open claw again, but not as much, to ensure clearance
     set_servo_position(claw,close_enough_to_pass_return);
     msleep(1000);  
-}
-
-void and_move()
-{
- cmpc(rm);
-    while (gmpc(rm) < 3000)
-    {
-        motor(rm,70);
-        motor(lm,78);
-    }
-    ao();
 }

@@ -1,0 +1,77 @@
+#include <kipr/botball.h>
+
+//Motor speed notes:
+//Fastest: lm=100 & rm=92
+//lm=80 & rm=73.5
+//lm=60 & rm=55.5
+//lm=40 & rm=36.875
+//lm=20 & rm=19
+
+//Integers:
+	//Motors:
+		int lm = 0;
+		int rm = 3;
+	//Servos:
+		int swiper = 0;
+		int elbow = 1;
+		int wrist = 3;
+			int wrist_straight = 711;
+		int claw = 2;
+	//Sensors:
+		//Analog:
+			int light = 0;
+			int reflectance = 1;
+		//Digital:
+			int touch = 0;
+int main()
+{
+	//wait_for_light(light);
+    //shut_down_in(119);
+    
+    //Lift up claw at wrist
+    set_servo_position(wrist,wrist_straight);
+    enable_servo(wrist);
+    
+    msleep(300);
+    
+    //Drive forward until it hits the pvc
+    while (digital(touch) == 0)
+    {
+    	motor(rm,92);
+    	motor(lm,100);
+    }
+    ao();
+    
+    msleep(300);
+    
+    //back up a smidge to turn w/out hitting claw on pole
+    motor(rm,-55.5);
+    motor(lm,-60);
+    msleep(450);
+    ao();
+    
+    msleep(300);
+    
+    //turn 90 degrees back left
+    motor(rm,55.5);
+    motor(lm,-60);
+    msleep(1130);
+    ao();
+    
+    msleep(300);
+	
+    //back up against the pipe
+    motor(rm,-55.5);
+    motor(lm,-60);
+    msleep(2000);
+    ao();
+    
+    msleep(300);
+    
+    //drive forward towards the orange pipe
+    
+    
+    
+    
+    return 0;
+}

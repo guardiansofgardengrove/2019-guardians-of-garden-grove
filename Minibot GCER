@@ -17,7 +17,7 @@
 			int elbow_straight = 465;
 		int wrist = 3;
 			int wrist_straight = 711;
-			int wrist_down = 900;
+			int wrist_down = 929;
 		int claw = 2;
 			int claw_open_wide = 454;
 			int claw_close_on_pvc = 1365;
@@ -135,7 +135,7 @@ int main()
     //Drive forward
     motor(rm,55.5);
     motor(lm,60);
-    msleep(1000);
+    msleep(820);
     ao();
     
     msleep(300);
@@ -145,13 +145,78 @@ int main()
     enable_servo(claw);
     msleep(600);
     
-    //lift the gas valve with wrist and elbow'
-    set_servo_position(wrist,531);
+    //Lift up the gas valve
+    set_servo_position(wrist,929);
+    enable_servo(elbow);
+    msleep(100);
+    set_servo_position(elbow,465);
     enable_servo(wrist);
-    set_servo_position(elbow,944);
-    enable_servo(claw);
+    msleep(100);
     
-    msleep(1000);
+    set_servo_position(elbow,486);
+    enable_servo(wrist);
+    msleep(100);
+    
+    set_servo_position(wrist,946);
+    enable_servo(elbow);
+    msleep(100);
+    set_servo_position(elbow,512);
+    enable_servo(wrist);
+    msleep(100);
+    
+    set_servo_position(wrist,980);
+    enable_servo(elbow);
+    msleep(100);
+    set_servo_position(elbow,540);
+    enable_servo(wrist);
+    msleep(100);
+    /*/
+    set_servo_position(wrist,1000);
+    enable_servo(elbow);
+    msleep(100);
+    set_servo_position(elbow,465);
+    enable_servo(wrist);
+    msleep(100);
+    
+    set_servo_position(wrist,929);
+    enable_servo(elbow);
+    msleep(100);
+    set_servo_position(elbow,465);
+    enable_servo(wrist);
+    msleep(100);
+    
+    set_servo_position(wrist,929);
+    enable_servo(elbow);
+    msleep(100);
+    set_servo_position(elbow,465);
+    enable_servo(wrist);
+    msleep(100);
+    
+    //Lift gradually @ wrist and elbow:
+    int counter_elbow_one = 465;
+    int counter_wrist_one = 929;
+    set_servo_position(elbow,counter_elbow_one);
+    set_servo_position(wrist,counter_wrist_one);
+    enable_servo(elbow);
+    enable_servo(wrist);
+    
+    msleep(500);
+    
+    while((counter_elbow_one<944) && (counter_wrist_one>531))
+    {
+        msleep(100);
+        counter_elbow_one = counter_elbow_one + 30;
+        counter_wrist_one = counter_wrist_one - 30;
+        
+        set_servo_position(elbow,counter_elbow_one);
+    	set_servo_position(wrist,counter_wrist_one);
+        
+        motor(rm,19);
+        motor(lm,20);
+        msleep(10);
+    }
+    msleep(500);
+    */
     
     return 0;
 }

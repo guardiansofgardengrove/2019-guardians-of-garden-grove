@@ -14,9 +14,13 @@
 	//Servos:
 		int swiper = 0;
 		int elbow = 1;
+			int elbow_straight = 465;
 		int wrist = 3;
 			int wrist_straight = 711;
+			int wrist_down = 900;
 		int claw = 2;
+			int claw_open_wide = 454;
+			int claw_close_on_pvc = 1365;
 	//Sensors:
 		//Analog:
 			int light = 0;
@@ -68,10 +72,86 @@ int main()
     
     msleep(300);
     
-    //drive forward towards the orange pipe
+    //drive forward towards the orange pipe until it hits it
+     while (digital(touch) == 0)
+    {
+    	motor(rm,92);
+    	motor(lm,100);
+    }
+    ao();
     
+    msleep(300);
     
+    //back up a smidge to be able to put down claw
+    motor(rm,-55.5);
+    motor(lm,-60);
+    msleep(1850);
+    ao();
     
+    msleep(300);
+
+    //turn 90 degrees back left to back up into pipe
+    motor(rm,55.5);
+    motor(lm,-60);
+    msleep(1220);
+    ao();
+    
+    //back up against the pipe
+    motor(rm,-55.5);
+    motor(lm,-60);
+    msleep(2000);
+    ao();
+    
+    msleep(300);
+    
+    //go straight to line up with the gas valve
+    motor(rm,55.5);
+    motor(lm,60);
+    msleep(3000);
+    ao();
+    
+    msleep(300);
+    
+    //turn 90 degrees towared the gas valve
+    motor(rm,-55.5);
+    motor(lm,60);
+    msleep(1100);
+    ao();
+    
+    //Get claw prepared to grab:
+    	//open claw
+        set_servo_position(claw,claw_open_wide);
+        enable_servo(claw);
+        msleep(500);
+    	//put claw down at elbow
+        set_servo_position(elbow,elbow_straight);
+        enable_servo(elbow);
+    	msleep(500);
+    	//put claw down at wrist
+    	set_servo_position(wrist,wrist_down);
+        enable_servo(elbow);
+    	msleep(500);
+    
+    //Drive forward
+    motor(rm,55.5);
+    motor(lm,60);
+    msleep(1000);
+    ao();
+    
+    msleep(300);
+    
+    //Grab gas valve by closing claw
+    set_servo_position(claw,claw_close_on_pvc);
+    enable_servo(claw);
+    msleep(600);
+    
+    //lift the gas valve with wrist and elbow'
+    set_servo_position(wrist,531);
+    enable_servo(wrist);
+    set_servo_position(elbow,944);
+    enable_servo(claw);
+    
+    msleep(1000);
     
     return 0;
 }

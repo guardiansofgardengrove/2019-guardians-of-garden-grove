@@ -4,57 +4,49 @@ int main()
 {
     //intro
     create_connect();
-    // REFERT TO THESE NUMBERS IF A CORD IS UMPLUGED //
+    // REFER TO THESE NUMBERS IF A CORD IS UMPLUGED //
     int frontArm = 1;
     int backArm = 0;
     int up = 0;
     int down = 1950;
-    int lightSenser = 1;
+    int lightSensor = 1;
     int leftLineSensor = 0;
     int rightLineSensor = 2;
     int timer = 0;
+    int i;
     msleep(2000); //get away from arms time
     set_servo_position(frontArm, 1790);
     set_servo_position(backArm, 0);
-    set_create_distance(0);
-    get_create_total_angle(0);
+	printf("Create Batter Power Before Run: %d",get_create_battery_charge());
     //WAIT FOR LIGHT NEEDS TO BE ADDED HERE LATER
     enable_servos();
     shut_down_in(119);
     
     //programing info;
     
-    
     //part 1: sweep the center line without people
     
     //get out of the starting box
     create_drive_direct(-100,-100);
     msleep(1000);
-    while (get_create_distance() <= 150) {
-    	create_drive_direct(300,300);
-	}
-    set_create_distance(0);
-   	create_stop();
+    create_stop();
+	create_drive_direct(300,300);
+    msleep(1000);
+    create_stop();
 
     //approach the start of the line
-	while (get_create_total_angle() >= -101) { 
-        create_drive_direct(200, -200);
-    }
-    set_create_total_angle(0);
+    create_spin_CW(200);
+    msleep(960);
     create_stop();
     
     //drive paralel to the starting line
-    while (get_create_distance() <= 800) {
-    	create_drive_direct(300,300);
-	}
-    set_create_distance(0);
-   	create_stop();
+    create_drive_direct(300,300);
+    msleep(2400);
+    create_stop();
     
     //turn to face of the line
-	while (get_create_total_angle() >= -101) { 
-        create_drive_direct(200,-200);
-    }
-    set_create_total_angle(0);
+	create_spin_CW(200);
+    msleep(960);
     create_stop();
     
     //check the gray and black line is passed before moving a bit farther to turn
@@ -62,23 +54,18 @@ int main()
         create_drive_direct(-100,-100);
     }
     create_stop();
-    while (get_create_distance() >= -200) {
-    	create_drive_direct(-100,-100);
-	}
-    set_create_distance(0);
+	create_drive_direct(-100,-100);
+    msleep(750);
     create_stop();
-
+	
     //turn to prep for the line and camera code
-	while (get_create_total_angle() <= 90) { 
-        create_drive_direct(-200,200);
-    }
-    set_create_total_angle(0);
+	create_spin_CCW(200);
+    msleep(960);
     create_stop();
-    set_servo_position(backArm,down);
-    msleep(500);
     
     //camera line follow
-    while (timer < 40){ //to change time, add a zero to however many seconds you want it to double line follow
+    set_servo_position(backArm,1900);
+    while (timer < 37){ //to change time, add a zero to however many seconds you want it to double line follow
         if (analog(leftLineSensor) > 2500 && analog(rightLineSensor) > 2500){
             create_drive_direct(-250,-250);
             msleep(100);
@@ -132,6 +119,63 @@ int main()
     camera_close();
     timer = 0;
     create_stop();
+    
+    //part 2: collect and sweep the people
+    
+    //get people
+    create_spin_CCW(200);
+    msleep(960);
+    create_stop();
+    
+    set_servo_position(frontArm, 1250);
+    msleep(250);
+    set_servo_position(frontArm, 620);
+    msleep(250);
+    create_drive_direct(50,50);
+    msleep(2750); //4000 3750 3650
+    set_servo_position(frontArm, 125);
+    msleep(250);
+    create_drive_direct(-75,-75);
+    msleep(6000);
+    create_stop();
+    msleep(1000);
+    
+    //loop to grab people
+    while(i<3){
+        set_servo_position(frontArm,1250);
+        msleep(250);
+        set_servo_position(frontArm,1790);
+        msleep(250);
+        create_drive_direct(-100,-100);
+        msleep(2500);//1000
+        create_drive_direct(100,100);
+        msleep(1000);
+        create_spin_CW(200);
+        msleep(960);
+        create_stop();
+        create_drive_direct(200,200);
+        msleep(1675); //2000 1750 1650 1700
+        create_spin_CCW(200);
+        msleep(960);
+        create_stop();
+        create_drive_direct(100,100);
+        msleep(1000);
+        set_servo_position(frontArm, 1250);
+    	msleep(250);
+    	set_servo_position(frontArm, 620);
+    	msleep(250);
+    	create_drive_direct(75,75);
+    	msleep(6000);
+    	set_servo_position(frontArm, 125);
+    	msleep(250);
+    	create_drive_direct(-75,-75);
+    	msleep(6000);
+    	create_stop();
+    	msleep(1000);
+        i++;
+    }
+    
+    
     
     //end of the program
     create_disconnect();

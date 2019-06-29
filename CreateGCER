@@ -7,24 +7,23 @@ int main()
     // REFER TO THESE NUMBERS IF A CORD IS UMPLUGED //
     int frontArm = 1;
     int backArm = 0;
-    int up = 0;
-    int down = 1950;
     int lightSensor = 1;
     int leftLineSensor = 0;
     int rightLineSensor = 2;
     int buldingSensor = 3;
     int timer = 0;
     int i;
+    int battery;
+    int path;
     msleep(2000); //get away from arms time
     set_servo_position(frontArm, 1790);
     set_servo_position(backArm, 0);
-	printf("Create Batter Power Before Run: %d",get_create_battery_charge());
+    battery = get_create_battery_charge() - 2600;
+	printf("Create Battery Power Before Run: %d",battery);
     //WAIT FOR LIGHT NEEDS TO BE ADDED HERE LATER
     enable_servos();
     shut_down_in(119);
-    
-    //programing info;
-    
+	printf("Create Battery Power At Start: %d",battery);
     //part 1: sweep the center line without people
     
     //get out of the starting box
@@ -51,7 +50,7 @@ int main()
     create_stop();
     
     //check the gray and black line is passed before moving a bit farther to turn
-    while (analog(rightLineSensor) < 2000){
+    while (analog(rightLineSensor) < 2500){
         create_drive_direct(-100,-100);
     }
     create_stop();
@@ -68,41 +67,40 @@ int main()
     //camera line follow
     set_servo_position(backArm,1900);
     msleep(500);
-    while (timer < 52){ //to change time, add two zeros to however many seconds you want it to double line follow
-        if (analog(leftLineSensor) > 2000 && analog(rightLineSensor) > 2000){ //1800
+    while (timer < 60){ //to change time, add two zeros to however many seconds you want it to double line follow
+        if (analog(leftLineSensor) > 2500 && analog(rightLineSensor) > 2500){ //1800
             create_drive_direct(-250,-250);
             msleep(100);
             timer = timer + 1;
         }
-        else if (analog(leftLineSensor) > 2000 && analog(rightLineSensor) < 2000){
+        else if (analog(leftLineSensor) > 2500 && analog(rightLineSensor) < 2500){
             create_drive_direct(0,-250);
             msleep(100);
-            timer = timer + .9;
+            timer = timer + 2;
     	}
-    	else if (analog(leftLineSensor) < 2000 && analog(rightLineSensor) > 2000) {
+    	else if (analog(leftLineSensor) < 2500 && analog(rightLineSensor) > 2500) {
             create_drive_direct(-250,0);
             msleep(100);
-            timer = timer + .9;
+            timer = timer + 2;
         }
         else{
 			create_drive_direct(-125,-250);
             msleep(100);
-            timer = timer + .9;
+            timer = timer + 1;
         }
     }
           create_stop();
     	  timer = 0;
-    	  msleep(500);
-    while (analog(buldingSensor) > 1700){ 
-        if (analog(leftLineSensor) > 2000 && analog(rightLineSensor) > 2000){
+    while (analog(buldingSensor) < 1300){ 
+        if (analog(leftLineSensor) > 2500 && analog(rightLineSensor) > 2500){
             create_drive_direct(-125,-125);
             msleep(100);
         }
-        else if (analog(leftLineSensor) > 2000 && analog(rightLineSensor) < 2000){
+        else if (analog(leftLineSensor) > 2500 && analog(rightLineSensor) < 2500){
             create_drive_direct(0,-125);
             msleep(100);
     	}
-    	else if (analog(leftLineSensor) < 2000 && analog(rightLineSensor) > 2000) {
+    	else if (analog(leftLineSensor) < 2500 && analog(rightLineSensor) > 2500) {
             create_drive_direct(-125,0);
             msleep(100);
         }
@@ -116,35 +114,39 @@ int main()
     	//check which buliding to deliver suplies too
     	set_servo_position(backArm,0);
     	camera_open_black();
-    	msleep(1000);
-    	while (timer < 50){
+    	while (timer < 100){
     		camera_update();
             msleep(2);
             timer = timer + 1;
         }
-    	
+    	set_servo_position(backArm, 1925);
+    	msleep(500);
         if (get_object_area(0,0) >=50) //turn if it sees an object 100
         {
            create_drive_direct(0,-200);
            msleep(800);
            create_drive_direct(-200,-200);
-           msleep(2500);
+           msleep(1200);
            create_drive_direct(200,200);
-           msleep(2500);
+           msleep(1200);
            create_drive_direct(0,200);
            msleep(800);
+           path = 1;
         }
     	else
         {
            create_drive_direct(-200,-200);
-           msleep(1700);
+           msleep(1200);
            create_drive_direct(200,200);
-           msleep(1700);
+           msleep(1200);
+           path = 0;
     	}
     camera_close();
     timer = 0;
     create_stop();
-    
+    set_servo_position(backArm,0);
+  	printf("Create Battery Power At Part 2: %d",battery);
+        
     //part 2: collect and sweep the people
     
     //get people
@@ -179,7 +181,7 @@ int main()
         msleep(960);
         create_stop();
         create_drive_direct(200,200);
-        msleep(1675); //2000 1750 1650 1700
+        msleep(1575); //2000 1750 1650 1700 1675
         create_spin_CCW(200);
         msleep(960);
         create_stop();
@@ -189,7 +191,7 @@ int main()
     	msleep(250);
     	set_servo_position(frontArm, 620);
     	msleep(250);
-    	create_drive_direct(100,75);//75,75
+    	create_drive_direct(75,75);
     	msleep(6000);
     	set_servo_position(frontArm, 125);
     	msleep(250);
@@ -200,16 +202,24 @@ int main()
         i++;
     }
     
+    //lift wall and back up
+    set_servo_position(frontArm,1250);
+    msleep(250);
+    set_servo_position(frontArm,1790);
+    msleep(250);
+    create_drive_direct(-200,-200);
+    msleep(2500);
+    
     //set up for line follow again
     create_spin_CW(200);
     msleep(960);
     create_drive_direct(100,100);
-    msleep(2000);
+    msleep(2500);
     create_spin_CW(200);
     msleep(960);
     
     //check the gray and black line is passed before moving a bit farther to turn
-    while (analog(rightLineSensor) < 1800){
+    while (analog(rightLineSensor) < 2500){
         create_drive_direct(-100,-100);
     }
     create_stop();
@@ -225,41 +235,41 @@ int main()
     
     //camera line follow
     set_servo_position(backArm,1900);
-    msleep(1000);
-    while (timer < 53){ //to change time, add two zeros to however many seconds you want it to double line follow
-        if (analog(leftLineSensor) > 1800 && analog(rightLineSensor) > 1800){
+    msleep(500);
+    while (timer < 50){ //to change time, add two zeros to however many seconds you want it to double line follow
+        if (analog(leftLineSensor) > 2500 && analog(rightLineSensor) > 2500){ //1800
             create_drive_direct(-250,-250);
             msleep(100);
             timer = timer + 1;
         }
-        else if (analog(leftLineSensor) > 1800 && analog(rightLineSensor) < 1800){
+        else if (analog(leftLineSensor) > 2500 && analog(rightLineSensor) < 2500){
             create_drive_direct(0,-250);
             msleep(100);
-            timer = timer + .75;
+            timer = timer + 2;
     	}
-    	else if (analog(leftLineSensor) < 1800 && analog(rightLineSensor) > 1800) {
+    	else if (analog(leftLineSensor) < 2500 && analog(rightLineSensor) > 2500) {
             create_drive_direct(-250,0);
             msleep(100);
-            timer = timer + .75;
+            timer = timer + 2;
         }
         else{
 			create_drive_direct(-125,-250);
             msleep(100);
-            timer = timer + .75;
+            timer = timer + 1;
         }
     }
           create_stop();
-    	  msleep(500);
-    while (analog(buldingSensor > 1180)){ 
-        if (analog(leftLineSensor) > 1800 && analog(rightLineSensor) > 1800){
+    	  timer = 0;
+    while (analog(buldingSensor) < 1300){ 
+        if (analog(leftLineSensor) > 2500 && analog(rightLineSensor) > 2500){
             create_drive_direct(-125,-125);
             msleep(100);
         }
-        else if (analog(leftLineSensor) > 1800 && analog(rightLineSensor) < 1800){
+        else if (analog(leftLineSensor) > 2500 && analog(rightLineSensor) < 2500){
             create_drive_direct(0,-125);
             msleep(100);
     	}
-    	else if (analog(leftLineSensor) < 1800 && analog(rightLineSensor) > 1800) {
+    	else if (analog(leftLineSensor) < 2500 && analog(rightLineSensor) > 2500) {
             create_drive_direct(-125,0);
             msleep(100);
         }
@@ -269,39 +279,25 @@ int main()
         }
     }
           create_stop();
-   		
-    	//check which buliding to deliver suplies too
-    	set_servo_position(backArm,0);
-    	camera_open_black();
-        msleep(1000);
-    	while (timer < 50){
-    		camera_update();
-            msleep(2);
-            timer = timer + 1;
-        }
-    	
-        if (get_object_area(0,0) >=50) //turn if it sees an object 100
+		if (path == 1) //the split path for this part usese the previous camera judgment
         {
            create_drive_direct(0,-200);
            msleep(800);
            create_drive_direct(-200,-200);
-           msleep(2500);
+           msleep(1200);
            create_drive_direct(200,200);
-           msleep(2500);
+           msleep(1200);
            create_drive_direct(0,200);
            msleep(800);
         }
     	else
         {
            create_drive_direct(-200,-200);
-           msleep(1700);
+           msleep(1200);
            create_drive_direct(200,200);
-           msleep(1700);
+           msleep(1200);
     	}
-    camera_close();
-    timer = 0;
-    create_stop();
-    
+   		
     //end of the program
     create_disconnect();
 	msleep(500);

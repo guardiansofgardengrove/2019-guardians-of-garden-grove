@@ -18,6 +18,8 @@
             int rm1 = 19.5; //19
 	//Servos:
 		int swiper = 0;
+			int swiper_front = 1948;
+			int swiper_back = 230;
 		int twister = 2;
 			int twister_straight = 1306;
 			int twister_turned = 220;
@@ -45,9 +47,9 @@ int main()
     msleep(300);
     
     //back up a smidge to turn w/out hitting claw on pole
-    motor(rm,-rm3);
-    motor(lm,-lm3);
-    msleep(900);//700
+    motor(rm,-rm5);
+    motor(lm,-lm5);
+    msleep(600);
     ao();
     
     msleep(300);
@@ -61,9 +63,9 @@ int main()
     msleep(300);
 	
     //back up against on the other pvc of the Utility Zone to straighten up
-    motor(rm,-rm3);
-    motor(lm,-lm3);
-    msleep(2000);
+    motor(rm,-rm5);
+    motor(lm,-lm5);
+    msleep(1400);
     ao();
     
     msleep(300);
@@ -79,9 +81,9 @@ int main()
     msleep(300);
     
     //back up to prepare to turn and back up
-    motor(rm,-rm3);
-    motor(lm,-lm3);
-    msleep(1850);
+    motor(rm,-rm5);
+    motor(lm,-lm5);
+    msleep(1450);
     ao();
     
     msleep(300);
@@ -92,10 +94,12 @@ int main()
     msleep(1220);
     ao();
     
+    msleep(300);
+    
     //back up against the pipe
-    motor(rm,-rm3);
-    motor(lm,-lm3);
-    msleep(2000);
+    motor(rm,-rm5);
+    motor(lm,-lm5);
+    msleep(1500);
     ao();
     
     msleep(300);
@@ -119,85 +123,140 @@ int main()
     //Drive forward to snap onto the gas valve with the fixed claw
     motor(rm,rm2);
     motor(lm,lm2);
-    msleep(3200);
+    msleep(3600);
     ao();
     
-    msleep(700);
+    msleep(300);
 
     //Lift up the pulley in order to remove the gas valve from the pvc
     motor(3,25);
-    msleep(10000);
-    ao();
-    
-    msleep(500);
-    
-    //Back up the SAME amount as originally went forward
-    motor(rm,-rm2);
-    motor(lm,-lm2);
-    msleep(3000);
+    msleep(11000);
     ao();
     
     msleep(300);
     
-    //Turn 90 degrees the SAME away from the gas valve
+    //Back up all the way
+    motor(rm,-rm5);
+    motor(lm,-lm5);
+    msleep(6500);
+    ao();
+    
+    msleep(300);
+    
+    set_servo_position(twister,twister_turned);
+    enable_servo(twister);
+    msleep(300);
+    set_servo_position(swiper,swiper_front);
+    enable_servo(swiper);
+    msleep(300);
+    
+    //go forward a smidge to have enough room to turn
+    motor(rm,rm4);
+    motor(lm,lm4);
+    msleep(2300);
+    ao();
+    
+    msleep(300);
+    
+    //Turn 90 degrees left and back
     motor(rm,rm3);
     motor(lm,-lm3);
-    msleep(1250);
-    ao();
-    
-    msleep(300);
-  
-    //Back up the SAME (+more) amount to back up on the pvc 
-    motor(rm,-rm3);
-    motor(lm,-lm3);
-    msleep(4000);
-    ao();
-    
-    msleep(300);
-    
-    //Go forward the SAME amount
-    motor(rm,rm3);
-    motor(lm,lm3);
-    msleep(2000);
-    ao();
-    
-    msleep(300);
-   
-    //Turn 90 degrees left and back the SAME to back up before going straight to place the gas valve
-    motor(rm,rm3);
-    motor(lm,-lm3);
-    msleep(1120);
+    msleep(1220);
     ao();
     
     msleep(300);
     
     //back up against the pipe the SAME
-    motor(rm,-rm3);
-    motor(lm,-lm3);
-    msleep(4000);
+    motor(rm,-rm5);
+    motor(lm,-lm5);
+    msleep(3300);
     ao();
     
     msleep(300);
 
-    set_servo_position(twister,twister_turned);
-    enable_servo(twister);
-    msleep(500);
-    
     //Drive straight until running into the pipe by the gas valve
   	motor(rm,rm5);
     motor(lm,lm5);
-    msleep(5000);
+    msleep(2200);
     ao();
     
-    //Turn 90 degrees to back up
-    
-    //Back on one last time on pole
-    
-    //Go forward until toch sensor
-    
-    //Navitage the gas valve onto the pipe
+    set_servo_position(swiper,swiper_back);
     
     msleep(300);
+    
+    //Turn 90 degrees to face the pipe
+    motor(rm,rm3);
+    motor(lm,-lm3);
+    msleep(1230);
+    ao();
+
+    msleep(300);
+    
+    while (digital(touch) == 0)
+    {
+    	motor(rm,rm3);
+    	motor(lm,lm3);
+    }
+    ao();
+    
+    msleep(300);
+    
+    //Navitage the gas valve onto the pipe:
+    	//Lower pulley a smidge
+    	motor(pulley,25);
+    	msleep(2000);
+    	ao();
+    
+    	//Lower pulley a smidge
+    	motor(pulley,-25);
+    	msleep(2200);
+    	ao();
+    	
+    	msleep(300);
+    
+    	motor(rm,-rm3);
+    	motor(lm,-rm3);
+    	msleep(500);
+    	ao();
+    
+    	msleep(300);
+    
+    	//Shimey shimey
+    	motor(lm,-lm3);
+    	msleep(2000);
+    	ao();
+    	
+    	msleep(300);
+    
+    	motor(rm,rm1);
+    	motor(lm,lm1);
+    	msleep(500);
+    	ao();
+    
+    	msleep(300);
+    
+    	motor(lm,-lm3);
+    	msleep(2000);
+    	ao();
+    
+    	msleep(300);
+    
+    	motor(rm,-rm4);
+    	motor(lm,-lm4);
+    	msleep(200);
+    	ao();
+    
+    	msleep(300);
+    	
+    	motor(rm,rm3);
+    	msleep(400);
+    	ao();
+    
+    //Back up to let go of gas valve
+    motor(lm,-lm5);
+    motor(rm,-rm5);
+    msleep(1000);
+    ao();
     
     return 0;
 }

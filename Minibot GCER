@@ -1,222 +1,203 @@
 #include <kipr/botball.h>
 
-//Motor speed notes:
-//Fastest: lm=100 & rm=92
-//lm=80 & rm=73.5
-//lm=60 & rm=55.5
-//lm=40 & rm=36.875
-//lm=20 & rm=19
-
 //Integers:
 	//Motors:
 		int lm = 0;
-		int rm = 3;
+		int rm = 1;
+		int pulley = 3;
+		//Motor speeds:
+			int lm5 = 100;
+            int rm5 = 93.5; //original before rebalancing 92
+            int lm4 = 80;
+            int rm4 = 74; //73.5
+            int lm3 = 60;
+            int rm3 = 56; //55.5
+            int lm2 = 40;
+            int rm2 = 37.125; //36.875
+            int lm1 = 20;
+            int rm1 = 19.5; //19
 	//Servos:
 		int swiper = 0;
-		int elbow = 1;
-			int elbow_straight = 465;
-		int wrist = 3;
-			int wrist_straight = 711;
-			int wrist_down = 929;
-		int claw = 2;
-			int claw_open_wide = 454;
-			int claw_close_on_pvc = 1365;
+		int twister = 2;
+			int twister_straight = 1306;
+			int twister_turned = 220;
 	//Sensors:
 		//Analog:
 			int light = 0;
-			int reflectance = 1;
 		//Digital:
-			int touch = 0;
+			int touch = 3;
 int main()
 {
 	//wait_for_light(light);
     //shut_down_in(119);
     
-    //Lift up claw at wrist
-    set_servo_position(wrist,wrist_straight);
-    enable_servo(wrist);
+    //Wait in the Disaster Relief Zone for the create to get out of the way
+    //msleep(????);
     
-    msleep(300);
-    
-    //Drive forward until it hits the pvc
-    while (digital(touch) == 0)
+    //Drive forward until it touches the pvc side in the Utility Zone
+  	while (digital(touch) == 0)
     {
-    	motor(rm,92);
-    	motor(lm,100);
+    	motor(rm,rm5);
+    	motor(lm,lm5);
     }
     ao();
     
     msleep(300);
     
     //back up a smidge to turn w/out hitting claw on pole
-    motor(rm,-55.5);
-    motor(lm,-60);
-    msleep(450);
+    motor(rm,-rm3);
+    motor(lm,-lm3);
+    msleep(900);//700
     ao();
     
     msleep(300);
     
-    //turn 90 degrees back left
-    motor(rm,55.5);
-    motor(lm,-60);
+    //turn 90 degrees back and left
+    motor(rm,rm3);
+    motor(lm,-lm3);
     msleep(1130);
     ao();
     
     msleep(300);
 	
-    //back up against the pipe
-    motor(rm,-55.5);
-    motor(lm,-60);
+    //back up against on the other pvc of the Utility Zone to straighten up
+    motor(rm,-rm3);
+    motor(lm,-lm3);
     msleep(2000);
     ao();
     
     msleep(300);
     
-    //drive forward towards the orange pipe until it hits it
+    //drive forward towards the orange pipe until it hits the pvc to the right of it
      while (digital(touch) == 0)
     {
-    	motor(rm,92);
-    	motor(lm,100);
+    	motor(rm,rm5);
+    	motor(lm,lm5);
     }
     ao();
     
     msleep(300);
     
-    //back up a smidge to be able to put down claw
-    motor(rm,-55.5);
-    motor(lm,-60);
+    //back up to prepare to turn and back up
+    motor(rm,-rm3);
+    motor(lm,-lm3);
     msleep(1850);
     ao();
     
     msleep(300);
 
-    //turn 90 degrees back left to back up into pipe
-    motor(rm,55.5);
-    motor(lm,-60);
+    //turn 90 degrees back and left to back up into pipe
+    motor(rm,rm3);
+    motor(lm,-lm3);
     msleep(1220);
     ao();
     
     //back up against the pipe
-    motor(rm,-55.5);
-    motor(lm,-60);
+    motor(rm,-rm3);
+    motor(lm,-lm3);
     msleep(2000);
     ao();
     
     msleep(300);
     
-    //go straight to line up with the gas valve
-    motor(rm,55.5);
-    motor(lm,60);
-    msleep(3000);
+    //go straight to move right in front of the gas valve
+    motor(rm,rm3);
+    motor(lm,lm3);
+    msleep(3200);
     ao();
     
     msleep(300);
     
     //turn 90 degrees towared the gas valve
-    motor(rm,-55.5);
-    motor(lm,60);
+    motor(rm,-rm3);
+    motor(lm,lm3);
     msleep(1100);
-    ao();
-    
-    //Get claw prepared to grab:
-    	//open claw
-        set_servo_position(claw,claw_open_wide);
-        enable_servo(claw);
-        msleep(500);
-    	//put claw down at elbow
-        set_servo_position(elbow,elbow_straight);
-        enable_servo(elbow);
-    	msleep(500);
-    	//put claw down at wrist
-    	set_servo_position(wrist,wrist_down);
-        enable_servo(elbow);
-    	msleep(500);
-    
-    //Drive forward
-    motor(rm,55.5);
-    motor(lm,60);
-    msleep(820);
     ao();
     
     msleep(300);
     
-    //Grab gas valve by closing claw
-    set_servo_position(claw,claw_close_on_pvc);
-    enable_servo(claw);
-    msleep(600);
+    //Drive forward to snap onto the gas valve with the fixed claw
+    motor(rm,rm2);
+    motor(lm,lm2);
+    msleep(3200);
+    ao();
     
-    //Lift up the gas valve
-    set_servo_position(wrist,929);
-    enable_servo(elbow);
-    msleep(100);
-    set_servo_position(elbow,465);
-    enable_servo(wrist);
-    msleep(100);
-    
-    set_servo_position(elbow,486);
-    enable_servo(wrist);
-    msleep(100);
-    
-    set_servo_position(wrist,946);
-    enable_servo(elbow);
-    msleep(100);
-    set_servo_position(elbow,512);
-    enable_servo(wrist);
-    msleep(100);
-    
-    set_servo_position(wrist,980);
-    enable_servo(elbow);
-    msleep(100);
-    set_servo_position(elbow,540);
-    enable_servo(wrist);
-    msleep(100);
-    /*/
-    set_servo_position(wrist,1000);
-    enable_servo(elbow);
-    msleep(100);
-    set_servo_position(elbow,465);
-    enable_servo(wrist);
-    msleep(100);
-    
-    set_servo_position(wrist,929);
-    enable_servo(elbow);
-    msleep(100);
-    set_servo_position(elbow,465);
-    enable_servo(wrist);
-    msleep(100);
-    
-    set_servo_position(wrist,929);
-    enable_servo(elbow);
-    msleep(100);
-    set_servo_position(elbow,465);
-    enable_servo(wrist);
-    msleep(100);
-    
-    //Lift gradually @ wrist and elbow:
-    int counter_elbow_one = 465;
-    int counter_wrist_one = 929;
-    set_servo_position(elbow,counter_elbow_one);
-    set_servo_position(wrist,counter_wrist_one);
-    enable_servo(elbow);
-    enable_servo(wrist);
+    msleep(700);
+
+    //Lift up the pulley in order to remove the gas valve from the pvc
+    motor(3,25);
+    msleep(10000);
+    ao();
     
     msleep(500);
     
-    while((counter_elbow_one<944) && (counter_wrist_one>531))
-    {
-        msleep(100);
-        counter_elbow_one = counter_elbow_one + 30;
-        counter_wrist_one = counter_wrist_one - 30;
-        
-        set_servo_position(elbow,counter_elbow_one);
-    	set_servo_position(wrist,counter_wrist_one);
-        
-        motor(rm,19);
-        motor(lm,20);
-        msleep(10);
-    }
+    //Back up the SAME amount as originally went forward
+    motor(rm,-rm2);
+    motor(lm,-lm2);
+    msleep(3000);
+    ao();
+    
+    msleep(300);
+    
+    //Turn 90 degrees the SAME away from the gas valve
+    motor(rm,rm3);
+    motor(lm,-lm3);
+    msleep(1250);
+    ao();
+    
+    msleep(300);
+  
+    //Back up the SAME (+more) amount to back up on the pvc 
+    motor(rm,-rm3);
+    motor(lm,-lm3);
+    msleep(4000);
+    ao();
+    
+    msleep(300);
+    
+    //Go forward the SAME amount
+    motor(rm,rm3);
+    motor(lm,lm3);
+    msleep(2000);
+    ao();
+    
+    msleep(300);
+   
+    //Turn 90 degrees left and back the SAME to back up before going straight to place the gas valve
+    motor(rm,rm3);
+    motor(lm,-lm3);
+    msleep(1120);
+    ao();
+    
+    msleep(300);
+    
+    //back up against the pipe the SAME
+    motor(rm,-rm3);
+    motor(lm,-lm3);
+    msleep(4000);
+    ao();
+    
+    msleep(300);
+
+    set_servo_position(twister,twister_turned);
+    enable_servo(twister);
     msleep(500);
-    */
+    
+    //Drive straight until running into the pipe by the gas valve
+  	motor(rm,rm5);
+    motor(lm,lm5);
+    msleep(5000);
+    ao();
+    
+    //Turn 90 degrees to back up
+    
+    //Back on one last time on pole
+    
+    //Go forward until toch sensor
+    
+    //Navitage the gas valve onto the pipe
+    
+    msleep(300);
     
     return 0;
 }

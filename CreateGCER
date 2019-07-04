@@ -67,7 +67,7 @@ int main()
     //camera line follow
     set_servo_position(backArm,1930);
     msleep(500);
-    while (timer < 56){ //to change time, add two zeros to however many seconds you want it to double line follow
+    while (timer < 56){ //to change time, add two zeros to however many seconds you want it to double line follow 56
         if (analog(leftLineSensor) > 2500 && analog(rightLineSensor) > 2500){ //1800
             create_drive_direct(-250,-250);
             msleep(100);
@@ -115,17 +115,17 @@ int main()
     	//check which buliding to deliver suplies too
     	set_servo_position(backArm,0);
     	camera_open_black();
-    	msleep(500);
+    	msleep(2000);
     	while (timer < 200){
     		camera_update();
             timer = timer + 1;
         }
     	set_servo_position(backArm, 1925);
     	msleep(500);
-        if (get_object_area(0,0) >=50) //turn if it sees an object 100
+        if (get_object_area(0,0) >=9) //turn if it sees an object 100
         {
            create_drive_direct(0,-200);
-           msleep(800);
+           msleep(800); //800
            create_drive_direct(-200,-200);
            msleep(1200);
            create_drive_direct(200,200);
@@ -165,74 +165,13 @@ int main()
     msleep(3650); //4000 3750 3650
     set_servo_position(frontArm, 125);
     msleep(250);
-    create_drive_direct(-250,-250);
-    	msleep(1000);
-    	set_servo_position(frontArm, 580);
-    	msleep(250);
-        create_stop();
-        msleep(500);
-    	create_drive_direct(250,250);
-    	msleep(1250);
-    	set_servo_position(frontArm, 125);
-    	msleep(250);
-    	create_drive_direct(-250,-250);//75
-    	msleep(2225);//6000 1875 1975
+    create_drive_direct(-250,-250);//75
+    msleep(1975);//6000 1875
     create_stop();
     msleep(1000);
     
-    //second building
-    //lift arm up
-        set_servo_position(frontArm,1250);
-        msleep(250);
-        set_servo_position(frontArm,1790);
-        msleep(250);
-        //back up to wall
-        create_drive_direct(-400,-400);//100 200
-        msleep(1000);//1000 2500 1250
-        //forward and turn to next building
-        create_drive_direct(200,200);//200
-        msleep(500);//1000
-        create_spin_CW(200);
-        msleep(960);
-        create_stop();
-        //distance between the two buildings
-        create_drive_direct(200,200);
-        msleep(1380); //2000 1750 1650 1700 1675 1575 1525 1480
-    create_stop();
-    msleep(250);
-        create_spin_CCW(200);
-        msleep(960);
-        create_stop();
-        //drive to next building
-        create_drive_direct(200,200);//100
-        msleep(500);//1000
-        //lower arm
-        set_servo_position(frontArm, 1250);
-    	msleep(250);
-    	set_servo_position(frontArm, 620);
-    	msleep(250);
-    	create_drive_direct(75,75);
-    	msleep(6000);
-        //lower down behind people and back up
-    	set_servo_position(frontArm, 125);
-    	msleep(250);
-    	create_drive_direct(-250,-250);
-    	msleep(1000);
-    	set_servo_position(frontArm, 580);
-    	msleep(250);
-        create_stop();
-        msleep(500);
-    	create_drive_direct(250,250);
-    	msleep(1250);
-    	set_servo_position(frontArm, 125);
-    	msleep(250);
-    	create_drive_direct(-250,-250);//75
-    	msleep(2225);//6000 1875 1975
-    	create_stop();
-    	msleep(1000);
-    
-    //loop to grab people for 3rd and 4th
-    while(i<2){
+    //loop to grab people between first two buildings
+    while(i<1){
         //lift arm up
         set_servo_position(frontArm,1250);
         msleep(250);
@@ -249,9 +188,8 @@ int main()
         create_stop();
         //distance between the two buildings
         create_drive_direct(200,200);
-        msleep(1800); //2000 1750 1650 1700 1675 1575 1525 1480 1600 1700
-    create_stop();
-    msleep(250);
+        msleep(1450); //2000 1750 1650 1700 1675 1575 1525
+        create_stop(); //added create stop here
         create_spin_CCW(200);
         msleep(960);
         create_stop();
@@ -268,22 +206,54 @@ int main()
         //lower down behind people and back up
     	set_servo_position(frontArm, 125);
     	msleep(250);
-    	create_drive_direct(-250,-250);
-    	msleep(1000);
-    	set_servo_position(frontArm, 580);
-    	msleep(250);
-        create_stop();
-        msleep(500);
-    	create_drive_direct(250,250);
-    	msleep(1250);
-    	set_servo_position(frontArm, 125);
-    	msleep(250);
-    	create_drive_direct(-250,-250);//75
-    	msleep(2225);//6000 1875 1975
+    	create_drive_direct(-250,-250);//75 125
+    	msleep(1975);//6000 3750 1875
     	create_stop();
     	msleep(1000);
         i++;
     }
+    i = 0;
+    while(i<2){ // distnce between the remaning buildings
+        //lift arm up
+        set_servo_position(frontArm,1250);
+        msleep(250);
+        set_servo_position(frontArm,1790);
+        msleep(250);
+        //back up to wall
+        create_drive_direct(-400,-400);//100 200
+        msleep(1000);//1000 2500 1250
+        //forward and turn to next building
+        create_drive_direct(200,200);//200
+        msleep(500);//1000
+        create_spin_CW(200);
+        msleep(960);
+        create_stop();
+        //distance between the two buildings
+        create_drive_direct(200,200);
+        msleep(1575); //2000 1750 1650 1700 1675 1575 1525
+        create_stop(); //added create stop here
+        create_spin_CCW(200);
+        msleep(960);
+        create_stop();
+        //drive to next building
+        create_drive_direct(200,200);//100
+        msleep(500);//1000
+        //lower arm
+        set_servo_position(frontArm, 1250);
+    	msleep(250);
+    	set_servo_position(frontArm, 620);
+    	msleep(250);
+    	create_drive_direct(75,75);
+    	msleep(6000);
+        //lower down behind people and back up
+    	set_servo_position(frontArm, 125);
+    	msleep(250);
+    	create_drive_direct(-250,-250);//75 125
+    	msleep(1975);//6000 3750 1875
+    	create_stop();
+    	msleep(1000);
+        i++;
+    } 
     
     //lift wall and back up
     set_servo_position(frontArm,1250);
@@ -325,7 +295,7 @@ int main()
     //camera line follow
     set_servo_position(backArm,1930);
     msleep(500);
-    while (timer < 22){ //to change time, add two zeros to however many seconds you want it to double line follow
+    while (timer < 52){ //to change time, add two zeros to however many seconds you want it to double line follow
         if (analog(leftLineSensor) > 2500 && analog(rightLineSensor) > 2500){ //1800
             create_drive_direct(-250,-250);
             msleep(100);
@@ -349,26 +319,7 @@ int main()
     }
           create_stop();
     	  timer = 0;
-    	  msleep(1000);
-    while (timer < 35){ //52
-        if (analog(leftLineSensor) > 2500 && analog(rightLineSensor) > 2500){
-            create_drive_direct(-125,-125);
-            msleep(100);
-        }
-        else if (analog(leftLineSensor) > 2500 && analog(rightLineSensor) < 2500){
-            create_drive_direct(0,-125);
-            msleep(100);
-    	}
-    	else if (analog(leftLineSensor) < 2500 && analog(rightLineSensor) > 2500) {
-            create_drive_direct(-125,0);
-            msleep(100);
-        }
-        else{
-			create_drive_direct(-65,-125);
-            msleep(100);
-        }
-    }
-          create_stop();
+    		msleep(1000);
     while (analog(buldingSensor) < 1300){ 
         if (analog(leftLineSensor) > 2500 && analog(rightLineSensor) > 2500){
             create_drive_direct(-125,-125);

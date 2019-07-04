@@ -174,10 +174,25 @@ int main()
     
     msleep(300);
 
+    //quick adjusting
+    motor(lm,-lm3);
+    msleep(400);
+    ao();
+    
+    msleep(300);
+    
+    //quick backing up just a tiny bit
+    motor(rm,-rm5);
+    motor(lm,-lm5);
+    msleep(1000);
+    ao();
+    
+    msleep(300);
+    
     //Drive straight until running into the pipe by the gas valve
   	motor(rm,rm5);
     motor(lm,lm5);
-    msleep(2200);
+    msleep(2350);
     ao();
     
     set_servo_position(swiper,swiper_back);
@@ -202,21 +217,18 @@ int main()
     msleep(300);
     
     //Navitage the gas valve onto the pipe:
-    	//Lower pulley a smidge
-    	motor(pulley,25);
-    	msleep(2000);
-    	ao();
     
     	//Lower pulley a smidge
     	motor(pulley,-25);
-    	msleep(2200);
+    	msleep(1200);
     	ao();
     	
     	msleep(300);
-    
+    	
+    	//Backs up
     	motor(rm,-rm3);
     	motor(lm,-rm3);
-    	msleep(500);
+    	msleep(300);
     	ao();
     
     	msleep(300);
@@ -241,21 +253,51 @@ int main()
     
     	msleep(300);
     
-    	motor(rm,-rm4);
-    	motor(lm,-lm4);
-    	msleep(200);
+    	motor(rm,-rm1);
+    	motor(lm,-lm1);
+    	msleep(500);
     	ao();
     
     	msleep(300);
     	
     	motor(rm,rm3);
-    	msleep(400);
+    	msleep(1400);
     	ao();
     
+    	msleep(300);
+    
+    	motor(rm,rm1);
+    	motor(lm,lm1);
+    	msleep(200);
+    	ao();
+    
+    	msleep(300);
+    
+    	motor(rm,rm2);
+    	msleep(300);
+    	ao();
+    
+    	msleep(600);
+    
+    
     //Back up to let go of gas valve
-    motor(lm,-lm5);
-    motor(rm,-rm5);
-    msleep(1000);
+    motor(lm,-lm3);
+    motor(rm,rm3);
+    msleep(800);
+    ao();
+    
+    msleep(300);
+    
+    motor(rm,rm2);
+    motor(lm,lm2);
+    msleep(400);
+    ao();
+    
+    msleep(300);
+    
+    motor(lm,-lm2);
+    motor(rm,-rm2);
+    msleep(1200);
     ao();
     
     return 0;

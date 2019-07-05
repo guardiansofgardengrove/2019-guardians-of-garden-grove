@@ -7,15 +7,15 @@
 		int pulley = 3;
 		//Motor speeds:
 			int lm5 = 100;
-            int rm5 = 93.5; //original before rebalancing 92
+            int rm5 = 95;
             int lm4 = 80;
-            int rm4 = 74; //73.5
+            int rm4 = 74;
             int lm3 = 60;
-            int rm3 = 56; //55.5
+            int rm3 = 56;
             int lm2 = 40;
-            int rm2 = 37.125; //36.875
+            int rm2 = 37.125;
             int lm1 = 20;
-            int rm1 = 19.5; //19
+            int rm1 = 19.5;
 	//Servos:
 		int swiper = 0;
 			int swiper_front = 1948;
@@ -26,15 +26,17 @@
 	//Sensors:
 		//Analog:
 			int light = 0;
+			int front = 1;
+			int back = 2;
 		//Digital:
 			int touch = 3;
 int main()
 {
 	//wait_for_light(light);
-    //shut_down_in(119);
+    shut_down_in(119);
     
     //Wait in the Disaster Relief Zone for the create to get out of the way
-    //msleep(????);
+    msleep(7000);
     
     //Drive forward until it touches the pvc side in the Utility Zone
   	while (digital(touch) == 0)
@@ -153,7 +155,7 @@ int main()
     //go forward a smidge to have enough room to turn
     motor(rm,rm4);
     motor(lm,lm4);
-    msleep(2300);
+    msleep(1000);
     ao();
     
     msleep(300);
@@ -173,22 +175,39 @@ int main()
     ao();
     
     msleep(300);
-
-    //quick adjusting
-    motor(lm,-lm3);
-    msleep(400);
+    
+    set_servo_position(swiper,swiper_back);
+    enable_servo(swiper);
+    msleep(300);
+    
+    //Drive forward until the back sensor sees black
+    while (analog(back) <700)
+    {
+    	motor(rm,rm);
+    	motor(lm,lm5);
+    }
     ao();
     
     msleep(300);
     
-    //quick backing up just a tiny bit
-    motor(rm,-rm5);
-    motor(lm,-lm5);
-    msleep(1000);
+    //Drive forward until the back sensor sees white
+    while (analog(back) > 2900)
+    {
+    	motor(rm,rm);
+    	motor(lm,lm5);
+    }
     ao();
     
     msleep(300);
     
+    
+    
+    
+    
+    
+    
+    /*/
+    THIS CODE IS FROM THE OTHER METHOD OF GETTING THE PVC ONTO THE PIPE.......................................
     //Drive straight until running into the pipe by the gas valve
   	motor(rm,rm5);
     motor(lm,lm5);
@@ -295,10 +314,11 @@ int main()
     
     msleep(300);
     
-    motor(lm,-lm2);
-    motor(rm,-rm2);
-    msleep(1200);
+    motor(lm,-lm5);
+    motor(rm,-rm5);
+    msleep(2000);
     ao();
+    /*/
     
     return 0;
 }

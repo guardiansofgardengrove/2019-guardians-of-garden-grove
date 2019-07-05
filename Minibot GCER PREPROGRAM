@@ -1,0 +1,28 @@
+#include <kipr/botball.h>
+
+//Integers:
+	//Motors:
+		int lm = 0;
+		int rm = 1;
+		int pulley = 3;
+	//Servos:
+		int swiper = 0;
+		int twister = 2;
+	//Sensors:
+		//Analog:
+			int light = 0;
+		//Digital:
+			int touch = 0;
+
+int main()
+{
+    printf("DANGER: This is just the pre-program\n");
+    
+    set_servo_position(swiper,230);
+    enable_servo(swiper);
+    msleep(1000);
+    set_servo_position(twister,1306);
+    enable_servo(twister);
+    msleep(500);
+    return 0;
+}

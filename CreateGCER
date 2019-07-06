@@ -133,7 +133,7 @@ int main()
            create_drive_direct(0,200);
            msleep(800);
            create_drive_direct(200,200);
-           msleep(200);
+           msleep(100);
            path = 1;
         }
     	else
@@ -141,7 +141,7 @@ int main()
            create_drive_direct(-200,-200);
            msleep(1200);
            create_drive_direct(200,200);
-           msleep(1400);
+           msleep(1300); //1400
            path = 0;
     	}
     camera_close();
@@ -188,7 +188,7 @@ int main()
         create_stop();
         //distance between the two buildings
         create_drive_direct(200,200);
-        msleep(1413); //2000 1750 1650 1700 1675 1575 1525 1450 1350 1400 1425
+        msleep(1340); //2000 1750 1650 1700 1675 1575 1525 1450 1350 1400 1425 1413 1400 1380 1365 1355
         create_stop(); //added create stop here
         create_spin_CCW(200);
         msleep(960);
@@ -230,10 +230,10 @@ int main()
         create_stop();
         //distance between the two buildings
         create_drive_direct(200,200);
-        msleep(1700); //2000 1750 1650 1700 1675 1575 1525 1575 1675 1725
+        msleep(1720); //2000 1750 1650 1700 1675 1575 1525 1575 1675 1725 1750 1730
         create_stop(); //added create stop here
         create_spin_CCW(200);
-        msleep(960);
+        msleep(970);//960
         create_stop();
         //drive to next building
         create_drive_direct(200,200);//100
@@ -345,19 +345,19 @@ int main()
            msleep(800);
            create_drive_direct(-200,-200);
            msleep(1200);
-           create_drive_direct(200,200);
+           /*create_drive_direct(200,200);
            msleep(1200);
            create_drive_direct(0,200);
            msleep(800);
            create_drive_direct(200,200);
-           msleep(200);
+           msleep(200); */
         }
     	else
         {
            create_drive_direct(-200,-200);
            msleep(1200);
-           create_drive_direct(200,200);
-           msleep(1400);
+           //create_drive_direct(200,200);
+           //msleep(1400);
     	}
    		
     //end of the program

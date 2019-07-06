@@ -7,7 +7,7 @@
 		int pulley = 3;
 		//Motor speeds:
 			int lm5 = 100;
-            int rm5 = 95;
+            int rm5 = 95;  //94.5
             int lm4 = 80;
             int rm4 = 74;
             int lm3 = 60;
@@ -35,8 +35,12 @@ int main()
 	//wait_for_light(light);
     shut_down_in(119);
     
-    //Wait in the Disaster Relief Zone for the create to get out of the way
-    msleep(7000);
+    //Lift up the pulley a bit
+    motor(pulley,-10);
+    msleep(6000);
+    ao();
+        
+    msleep(1000);
     
     //Drive forward until it touches the pvc side in the Utility Zone
   	while (digital(touch) == 0)
@@ -163,7 +167,7 @@ int main()
     //Turn 90 degrees left and back
     motor(rm,rm3);
     motor(lm,-lm3);
-    msleep(1220);
+    msleep(1200);
     ao();
     
     msleep(300);
@@ -176,149 +180,68 @@ int main()
     
     msleep(300);
     
-    set_servo_position(swiper,swiper_back);
+    set_servo_position(swiper,100);
     enable_servo(swiper);
     msleep(300);
     
     //Drive forward until the back sensor sees black
     while (analog(back) <700)
     {
-    	motor(rm,rm);
-    	motor(lm,lm5);
-    }
-    ao();
-    
-    msleep(300);
-    
-    //Drive forward until the back sensor sees white
-    while (analog(back) > 2900)
-    {
-    	motor(rm,rm);
-    	motor(lm,lm5);
-    }
-    ao();
-    
-    msleep(300);
-    
-    
-    
-    
-    
-    
-    
-    /*/
-    THIS CODE IS FROM THE OTHER METHOD OF GETTING THE PVC ONTO THE PIPE.......................................
-    //Drive straight until running into the pipe by the gas valve
-  	motor(rm,rm5);
-    motor(lm,lm5);
-    msleep(2350);
-    ao();
-    
-    set_servo_position(swiper,swiper_back);
-    
-    msleep(300);
-    
-    //Turn 90 degrees to face the pipe
-    motor(rm,rm3);
-    motor(lm,-lm3);
-    msleep(1230);
-    ao();
-
-    msleep(300);
-    
-    while (digital(touch) == 0)
-    {
-    	motor(rm,rm3);
-    	motor(lm,lm3);
-    }
-    ao();
-    
-    msleep(300);
-    
-    //Navitage the gas valve onto the pipe:
-    
-    	//Lower pulley a smidge
-    	motor(pulley,-25);
-    	msleep(1200);
-    	ao();
-    	
-    	msleep(300);
-    	
-    	//Backs up
-    	motor(rm,-rm3);
-    	motor(lm,-rm3);
-    	msleep(300);
-    	ao();
-    
-    	msleep(300);
-    
-    	//Shimey shimey
-    	motor(lm,-lm3);
-    	msleep(2000);
-    	ao();
-    	
-    	msleep(300);
-    
-    	motor(rm,rm1);
-    	motor(lm,lm1);
-    	msleep(500);
-    	ao();
-    
-    	msleep(300);
-    
-    	motor(lm,-lm3);
-    	msleep(2000);
-    	ao();
-    
-    	msleep(300);
-    
-    	motor(rm,-rm1);
-    	motor(lm,-lm1);
-    	msleep(500);
-    	ao();
-    
-    	msleep(300);
-    	
-    	motor(rm,rm3);
-    	msleep(1400);
-    	ao();
-    
-    	msleep(300);
-    
-    	motor(rm,rm1);
-    	motor(lm,lm1);
-    	msleep(200);
-    	ao();
-    
-    	msleep(300);
-    
     	motor(rm,rm2);
-    	msleep(300);
-    	ao();
+    	motor(lm,lm2);
+    }
+    ao();
     
-    	msleep(600);
+    msleep(300);
     
+   	motor(rm,rm3);
+    motor(lm,-lm1);
+    msleep(4000);
+    ao();
     
-    //Back up to let go of gas valve
-    motor(lm,-lm3);
-    motor(rm,rm3);
-    msleep(800);
+    msleep(300);
+    
+    motor(rm,-rm1);
+    motor(lm,-lm1);
+    msleep(500);
     ao();
     
     msleep(300);
     
     motor(rm,rm2);
-    motor(lm,lm2);
-    msleep(400);
+    msleep(600);
     ao();
     
     msleep(300);
     
-    motor(lm,-lm5);
-    motor(rm,-rm5);
-    msleep(2000);
+    motor(rm,rm1);
+    motor(lm,lm1);
+    msleep(500);
     ao();
+    
+    msleep(300);
+    
+    motor(rm,-rm5);
+    motor(lm,-lm5);
+    msleep(2200);
+    ao();
+    
     /*/
+    //Turn right (Mini-bot POV) 90 dec in place
+    
+    //Run straight yeet until front top-hat hit black tape then white
+    
+    
+    //Turn right 90 dec in place
+    
+    //Back up all the way
+    
+    //Run straight 'till hit front top-hat hit black then white
+    
+    //Swip the swipper to the front
+    
+    /*/
+   
     
     return 0;
 }

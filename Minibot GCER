@@ -7,7 +7,7 @@
 		int pulley = 3;
 		//Motor speeds:
 			int lm5 = 100;
-            int rm5 = 95;  //94.5
+            int rm5 = 96;
             int lm4 = 80;
             int rm4 = 74;
             int lm3 = 60;
@@ -32,7 +32,7 @@
 			int touch = 3;
 int main()
 {
-	//wait_for_light(light);
+	wait_for_light(light);
     shut_down_in(119);
     
     //Lift up the pulley a bit
@@ -55,7 +55,7 @@ int main()
     //back up a smidge to turn w/out hitting claw on pole
     motor(rm,-rm5);
     motor(lm,-lm5);
-    msleep(600);
+    msleep(750);//600
     ao();
     
     msleep(300);
@@ -79,7 +79,7 @@ int main()
     //drive forward towards the orange pipe until it hits the pvc to the right of it
      while (digital(touch) == 0)
     {
-    	motor(rm,rm5);
+    	motor(rm,96.5);
     	motor(lm,lm5);
     }
     ao();
@@ -159,7 +159,7 @@ int main()
     //go forward a smidge to have enough room to turn
     motor(rm,rm4);
     motor(lm,lm4);
-    msleep(1000);
+    msleep(1075);  //1000
     ao();
     
     msleep(300);
@@ -167,7 +167,7 @@ int main()
     //Turn 90 degrees left and back
     motor(rm,rm3);
     motor(lm,-lm3);
-    msleep(1200);
+    msleep(1350);
     ao();
     
     msleep(300);
@@ -184,64 +184,69 @@ int main()
     enable_servo(swiper);
     msleep(300);
     
+    //put pulley down
+    motor(pulley,-10);
+    msleep(1000);
+    ao();
+    
+    msleep(300);
+    
     //Drive forward until the back sensor sees black
-    while (analog(back) <700)
+    while (analog(back) <1000) //700
     {
     	motor(rm,rm2);
     	motor(lm,lm2);
     }
     ao();
     
-    msleep(300);
+    msleep(500);
     
    	motor(rm,rm3);
     motor(lm,-lm1);
     msleep(4000);
     ao();
     
-    msleep(300);
+    msleep(500);
     
     motor(rm,-rm1);
     motor(lm,-lm1);
     msleep(500);
     ao();
     
-    msleep(300);
+    msleep(500);
     
     motor(rm,rm2);
     msleep(600);
     ao();
     
-    msleep(300);
+    msleep(500);
     
     motor(rm,rm1);
     motor(lm,lm1);
     msleep(500);
     ao();
     
-    msleep(300);
+    msleep(500);
     
     motor(rm,-rm5);
     motor(lm,-lm5);
-    msleep(2200);
+    msleep(1000);
     ao();
     
-    /*/
-    //Turn right (Mini-bot POV) 90 dec in place
+    msleep(500);
     
-    //Run straight yeet until front top-hat hit black tape then white
+    //Turn a bit
+    motor(rm,-rm4);
+    msleep(1000);
+    ao();
     
+    msleep(500);
     
-    //Turn right 90 dec in place
-    
-    //Back up all the way
-    
-    //Run straight 'till hit front top-hat hit black then white
-    
-    //Swip the swipper to the front
-    
-    /*/
-   
+    //Back up to get out of the way
+    motor(rm,-rm4);
+    motor(lm,-lm4);
+    msleep(7000);
+    ao(); 
     
     return 0;
 }

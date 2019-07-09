@@ -66,7 +66,7 @@ int main()
     //camera line follow
     set_servo_position(backArm,1930);
     msleep(500);
-    while (timer < 56){ //to change time, add two zeros to however many seconds you want it to double line follow 56
+    while (timer < 57){ //to change time, add two zeros to however many seconds you want it to double line follow 56
         if (analog(leftLineSensor) > 2800 && analog(rightLineSensor) > 2800){ //1800 2500
             create_drive_direct(-250,-250);
             msleep(100);
@@ -121,7 +121,7 @@ int main()
         }
     	set_servo_position(backArm, 1925);
     	msleep(500);
-        if (get_object_area(0,0) >= 144) //turn if it sees an object 36
+        if (get_object_area(0,0) >= 100) //turn if it sees an object 36 144
         {
            create_drive_direct(0,-200);
            msleep(800); //800
@@ -160,6 +160,8 @@ int main()
     set_servo_position(frontArm, 1250);
     msleep(250);
     set_servo_position(frontArm, 620);
+    msleep(250);
+    create_stop();
     msleep(250);
     create_drive_direct(50,50);
     msleep(3650); //4000 3750 3650

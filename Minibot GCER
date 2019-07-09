@@ -118,10 +118,10 @@ int main()
     
     msleep(300);
     
-    //turn 90 degrees towared the gas valve
+    //turn 90 degrees to face the gas valve
     motor(rm,-rm3);
     motor(lm,lm3);
-    msleep(1100);
+    msleep(1020);
     ao();
     
     msleep(300);
@@ -141,7 +141,7 @@ int main()
     
     msleep(300);
     
-    //Back up all the way
+    //Back up all the way to almost where it began
     motor(rm,-rm5);
     motor(lm,-lm5);
     msleep(6500);
@@ -149,6 +149,7 @@ int main()
     
     msleep(300);
     
+    //Rotate the claw to be parallel to the ground
     set_servo_position(twister,twister_turned);
     enable_servo(twister);
     msleep(300);
@@ -156,7 +157,7 @@ int main()
     enable_servo(swiper);
     msleep(300);
     
-    //go forward a smidge to have enough room to turn
+    //go forward a smidge to have enough room to turn and not hit the pole
     motor(rm,rm4);
     motor(lm,lm4);
     msleep(1075);  //1000
@@ -172,7 +173,7 @@ int main()
     
     msleep(300);
     
-    //back up against the pipe the SAME
+    //back up against the pipe
     motor(rm,-rm5);
     motor(lm,-lm5);
     msleep(3300);
@@ -184,7 +185,7 @@ int main()
     enable_servo(swiper);
     msleep(300);
     
-    //put pulley down
+    //put pulley down at desired height
     motor(pulley,-10);
     msleep(1000);
     ao();

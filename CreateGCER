@@ -132,7 +132,7 @@ int main()
            create_drive_direct(0,200);
            msleep(800);
            create_drive_direct(200,200);
-           msleep(100);
+           msleep(50); //100
            path = 1;
         }
     	else
@@ -140,7 +140,7 @@ int main()
            create_drive_direct(-200,-200);
            msleep(1200);
            create_drive_direct(200,200);
-           msleep(1300); //1400
+           msleep(1250); //1400 1300 1200
            path = 0;
     	}
     camera_close();
@@ -159,7 +159,7 @@ int main()
     
     set_servo_position(frontArm, 1250);
     msleep(250);
-    set_servo_position(frontArm, 620);
+    set_servo_position(frontArm, 680);//620
     msleep(250);
     create_stop();
     msleep(250);
@@ -190,7 +190,7 @@ int main()
         create_stop();
         //distance between the two buildings
         create_drive_direct(200,200);
-        msleep(1330); //2000 1750 1650 1700 1675 1575 1525 1450 1350 1400 1425 1413 1400 1380 1365 1355 1340 1325 1310 1320
+        msleep(1340); //2000 1750 1650 1700 1675 1575 1525 1450 1350 1400 1425 1413 1400 1380 1365 1355 1340 1325 1310 1320 1330
         create_stop(); //added create stop here
         create_spin_CCW(200);
         msleep(960);
@@ -201,7 +201,7 @@ int main()
         //lower arm
         set_servo_position(frontArm, 1250);
     	msleep(250);
-    	set_servo_position(frontArm, 620);
+    	set_servo_position(frontArm, 680);//620
     	msleep(250);
     	create_drive_direct(75,75);
     	msleep(6000);
@@ -234,7 +234,7 @@ int main()
         msleep(1715); //2000 1750 1650 1700 1675 1575 1525 1575 1675 1725 1750 1730 1720 1725
         create_stop(); //added create stop here
         create_spin_CCW(200);
-        msleep(980);//960
+        msleep(990);//960 980
         create_stop();
         //drive to next building
         create_drive_direct(200,200);//100
@@ -242,7 +242,7 @@ int main()
         //lower arm
         set_servo_position(frontArm, 1250);
     	msleep(250);
-    	set_servo_position(frontArm, 620);
+    	set_servo_position(frontArm, 680);//620
     	msleep(250);
     	create_drive_direct(75,75);
     	msleep(6000);
@@ -283,7 +283,7 @@ int main()
         //lower arm
         set_servo_position(frontArm, 1250);
     	msleep(250);
-    	set_servo_position(frontArm, 620);
+    	set_servo_position(frontArm, 680);//620
     	msleep(250);
     	create_drive_direct(75,75);
     	msleep(6000);

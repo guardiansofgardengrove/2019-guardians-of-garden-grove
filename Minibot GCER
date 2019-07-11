@@ -227,6 +227,11 @@ int main()
     msleep(500);
     ao();
     
+    msleep(300);
+    
+    set_servo_position(twister,85);
+    enable_servo(twister);
+    
     msleep(500);
     
     motor(rm,-rm5);
